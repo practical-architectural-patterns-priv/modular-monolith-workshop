@@ -1,8 +1,9 @@
 # 🦖 Should Monoliths Die Out Like Dinosaurs?
 *A hands-on workshop on modular monolith architecture, boundaries, and evolution*
+
 ---
 
-### 🕐 0:00–0:05 — Welcome & Workshop Goals (5 min)
+### 🕐 0:00–0:05 - Welcome & Workshop Goals (5 min)
 The session is opened in Zoom, and the title slide with the workshop name *“Should Monoliths Die Out Like Dinosaurs?”* is shown. 
 Participants are welcomed, and the 3-hour agenda is briefly described, showing how the session will progress from context and shared experience, 
 through hands-on exploration and tooling demonstrations, to a real-world case study.
@@ -15,9 +16,10 @@ The goals of the session are described, including:
 - demonstrating the use of tools such as **Spring Modulith** and **ArchUnit**,
 - examining **HEET**, a real production-ready modular monolith built at HSBC, as an example of successful modular design and selective microservice extraction,
 - connecting architectural decisions to organisational structure and system evolution.
+
 ---
 
-### 🕐 0:05–0:15 — Poll: Experience Spectrum (10 min)
+### 🕐 0:05–0:15 - Poll: Experience Spectrum (10 min)
 
 **5 min – Poll launch and response**  
 A short poll on Zoom is launched to collect participants’ self-assessment of hands-on experience with three architectural approaches:
@@ -29,10 +31,11 @@ A short poll on Zoom is launched to collect participants’ self-assessment of h
 The responses are displayed and discussed. Observations are shared about the range of experience in the room. 
 It is noted whether the group leans more towards traditional monoliths, distributed systems, or modular monolith experience. 
 
-It is emphasised that the workshop is designed to provide value regardless of prior experience — for both participants who have built monoliths and those who are exploring modular architecture for the first time.
+It is emphasised that the workshop is designed to provide value regardless of prior experience - for both participants who have built monoliths and those who are exploring modular architecture for the first time.
+
 ---
 
-### 🕐 0:15–0:25 — Architecture Spectrum: Monolith → Modular Monolith → Microservices (10 min)
+### 🕐 0:15–0:25 - Architecture Spectrum: Monolith → Modular Monolith → Microservices (10 min)
 
 **5 min – Spectrum overview**  
 A visual spectrum of architectures is displayed, showing the evolution from monolith to modular monolith to microservices.  
@@ -49,9 +52,10 @@ The modular monolith is presented as a deliberate strategic choice rather than a
 It is explained that it solves internal coupling problems while avoiding the full operational complexity of distributed systems.
 
 Participants are encouraged to reflect on where their current systems are positioned on this spectrum and what trade-offs have shaped their architecture choices.
+
 ---
 
-### 🕐 0:25–0:40 — Sticky Note Exercise: Top 3 Monolith Problems (15 min)
+### 🕐 0:25–0:40 - Sticky Note Exercise: Top 3 Monolith Problems (15 min)
 
 **3 min – Whiteboard setup and explanation**  
 A collaborative whiteboard is opened using Zoom’s built-in whiteboard feature. 
@@ -71,9 +75,10 @@ Each cluster is briefly discussed to ensure shared understanding of the underlyi
 
 The recurring problems identified during this exercise are explicitly linked to the later parts of the workshop, 
 where approaches to address them will be explored through architecture patterns, tooling, and refactoring techniques.
+
 ---
 
-### 🕐 0:40–0:55 — Module Fundamentals and Key Patterns (15 min)
+### 🕐 0:40–0:55 - Module Fundamentals and Key Patterns (15 min)
 
 **5 min – Revisiting the modular monolith concept**  
 The fundamental principles of modular monolith architecture are discussed.
@@ -97,15 +102,16 @@ Before any code analysis begins, several foundational patterns are presented to 
 
 It is explained that these patterns will serve as a lens for analysing the upcoming example system. 
 Participants are encouraged to think critically about where each pattern is respected or violated.
+
 ---
 
-### 🕐 0:55–1:40 — Code Exercise: Diagnosing a Wannabe Modular Monolith (45 min)
+### 🕐 0:55–1:40 - Code Exercise: Diagnosing a Wannabe Modular Monolith (45 min)
 
 **10 min – Introduction to the exercise**  
 A small but functional **Spring Boot** project (~12 classes) representing the Con-SOLID-Ate platform is introduced. 
 Its structure appears modular at first glance, with separate packages for components such as `analysis`, `leaderboard`, `points`, and `submission`.
 
-It is explained that this is an intentionally *wannabe modular monolith* — a system that looks modular in code structure but may contain deeper architectural flaws.  
+It is explained that this is an intentionally *wannabe modular monolith* - a system that looks modular in code structure but may contain deeper architectural flaws.  
 Although the structure appears modular, participants are prompted to question whether it truly adheres to modular principles. Questions to consider include:
 - Do the boundaries align with real business capabilities or are they arbitrary?
 - Is data ownership isolated, or are multiple modules accessing the same tables?
@@ -137,9 +143,10 @@ A short synthesis is presented, highlighting recurring themes and linking them b
 It is reinforced that **superficial modularity in code structure is insufficient** if the underlying data and dependency boundaries are not respected.
 
 The exercise concludes with the key message that a modular monolith must enforce boundaries consistently across code, APIs, and data layers to deliver the intended benefits.
+
 ---
 
-### 🕐 1:40–2:00 — Tooling Demonstrations: Spring Modulith & ArchUnit (20 min)
+### 🕐 1:40–2:00 - Tooling Demonstrations: Spring Modulith & ArchUnit (20 min)
 
 **10 min – Spring Modulith visualisation**  
 The **Spring Modulith** tool is demonstrated on the Con-SOLID-Ate project analysed during the previous exercise.  
@@ -164,7 +171,7 @@ It is noted that automated tests do not replace design discipline but act as gua
 
 ---
 
-### 🕐 2:00–2:35 — Designing Better Boundaries & Applying Patterns (35 min)
+### 🕐 2:00–2:35 - Designing Better Boundaries & Applying Patterns (35 min)
 
 **10 min – Revisiting principles and patterns**  
 The key principles of modular monolith design are revisited to anchor the next activity. 
@@ -198,12 +205,13 @@ The discussion reinforces that modular boundaries must be intentional, enforceab
 **10 min – Lessons learned and link to future evolution**  
 The redesigned model is reviewed collectively. The group reflects on how the changes address the pain points identified in the sticky note exercise at the start of the workshop. 
 It is highlighted how careful boundary design improves maintainability, scalability, and future adaptability without prematurely committing to microservices.
+
 ---
 
-### 🕐 2:35–2:50 — Case Study: HEET – A Modular Monolith in Production (15 min)
+### 🕐 2:35–2:50 - Case Study: HEET – A Modular Monolith in Production (15 min)
 
 The **HEET** internal platform is presented as a real-world example of a modular monolith operating in production. 
-Its domain-oriented modules — including `Employees`, `Changes`, `Applications`, and `Source code` — are described.
+Its domain-oriented modules - including `Employees`, `Changes`, `Applications`, and `Source code` - are described.
 
 A concrete scenario is discussed in which the `Workforce` module, containing sensitive employee data, had to comply with data residency and visa restrictions when the platform was prepared for production deployment.  
 Because the application was designed as a modular monolith from the beginning, the extraction of `Workforce` into a standalone microservice was achieved smoothly and with minimal effort.
@@ -218,7 +226,7 @@ The case study illustrates that a modular monolith provides rapid delivery and s
 
 ---
 
-### 🕐 2:50–3:00 — Evolution Path, Conway’s Law, and Wrap-Up (10 min)
+### 🕐 2:50–3:00 - Evolution Path, Conway’s Law, and Wrap-Up (10 min)
 
 **5 min – Evolution and organisational alignment**  
 Attention is shifted to the broader organisational perspective. **Conway’s Law** is discussed, showing how team communication structures influence system architecture.
@@ -228,7 +236,7 @@ CI/CD implications are explored. It is noted that pipelines can still be optimis
 
 **5 min – Reflection and closing**  
 The workshop concludes by revisiting the sticky note board from the beginning of the session. 
-Participants reflect on how the topics covered — from fundamentals and patterns to tooling and case studies — address the pain points they initially listed.
+Participants reflect on how the topics covered - from fundamentals and patterns to tooling and case studies - address the pain points they initially listed.
 
 Key takeaways are summarised:
 - Modular boundaries and contracts define modularity, not deployment units.
@@ -236,5 +244,6 @@ Key takeaways are summarised:
 - Data ownership and event-driven communication are critical to sustainable modular design.
 - Modular monoliths simplify future evolution and make selective microservice extraction straightforward when required.
 
-Resources for further exploration — including the sample codebase, **Spring Modulith** documentation, and **ArchUnit** repository — are shared.
+Resources for further exploration - including the sample codebase, **Spring Modulith** documentation, and **ArchUnit** repository - are shared.
+
 ---
