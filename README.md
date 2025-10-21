@@ -189,6 +189,10 @@ This project is a standard **Spring Boot** backend and can be deployed as a stan
 ### 🏗️ Build and run locally
 
 ```bash
+mvn spring-boot:run
+```
+or 
+```bash
 mvn clean package
 java -jar target/con-solid-ate-1.0.0.jar
 ```
