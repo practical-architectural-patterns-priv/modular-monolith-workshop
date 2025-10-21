@@ -177,6 +177,36 @@ C4Component
 
 ---
 
+Excellent — that will make the README feel complete and immediately clear for your workshop participants.
+Here’s an updated **README.md** section you can append to your Con-SOLID-Ate project.
+It presents a **visual directory tree** and explains what each package does — written in the same professional tone as the rest of your document.
+
+---
+
+### 🧩 Code Structure and Package Overview
+
+The Con-SOLID-Ate backend follows a **layered modular design**, where each package represents a domain module or a shared cross-cutting concern.  
+This section provides an overview of the source code layout and explains the purpose of each part of the system.
+
+```
+src/
+├── main/
+│   ├── java/edu/architecture/modularmonolith/consolidate/
+│   │   ├── webhook/                # Handles Git webhook intake (entry point)
+│   │   ├── submission/             # Manages submission lifecycle and metadata
+│   │   ├── analysis/               # Executes static analysis jobs and collects metrics
+│   │   ├── points/                 # Calculates points and maintains points ledger
+│   │   ├── leaderboard/            # Aggregates and serves leaderboard data
+│   │   ├── shared/                 # Cross-cutting utilities  
+│   │   └── ConSolidAte.java        # Main Spring Boot entry point
+│   └── resources/
+│       ├── application.properties  # Application configuration
+│       └── schema.sql              # Database schema definition
+└── test/
+    └──groovy/                      # End-to-end Spock BDD tests
+````
+---
+
 ## 🚀 Deployment
 
 This project is a standard **Spring Boot** backend and can be deployed as a standalone service or within your existing backend ecosystem.
@@ -208,7 +238,7 @@ The service will start on `http://localhost:8080`.
 ```bash
 curl -X POST http://localhost:8080/webhook/github \
   -H "Content-Type: application/json" \
-  -d '{"userId":"u1","repoUrl":"https://github.com/acme/repo","branch":"main"}'
+  -d '{"userId":"marcin","pullRequestUrl":"https://github.com/workshop/con-solid-ate/pull/1"}'
 ```
 
 ✅ Expected: submission stored, analysis triggered, points awarded, leaderboard updated.

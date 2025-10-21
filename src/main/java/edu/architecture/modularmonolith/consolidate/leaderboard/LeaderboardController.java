@@ -16,7 +16,7 @@ public class LeaderboardController {
         this.repository = repository;
     }
 
-    @GetMapping("/top")
+    @GetMapping
     public List<LeaderboardEntry> getTopEntries(@RequestParam(name = "size", defaultValue = "5") int size) {
         Pageable pageable = PageRequest.of(0, size);
         return repository.findTopEntries(pageable);
