@@ -1,6 +1,5 @@
 package edu.architecture.modularmonolith.consolidate.submission;
 
-import edu.architecture.modularmonolith.consolidate.analysis.Analysing;
 import edu.architecture.modularmonolith.consolidate.analysis.AnalyzerService;
 import edu.architecture.modularmonolith.consolidate.shared.ValidationUtils;
 import org.springframework.stereotype.Service;

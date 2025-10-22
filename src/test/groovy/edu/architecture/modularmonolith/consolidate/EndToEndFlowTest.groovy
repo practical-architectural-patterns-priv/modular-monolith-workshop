@@ -10,12 +10,16 @@ import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.context.annotation.Bean
 import org.springframework.http.HttpStatus
 import org.springframework.jdbc.core.JdbcTemplate
+import org.springframework.test.annotation.DirtiesContext
+import org.springframework.test.context.ActiveProfiles
 import spock.lang.Specification
 
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
         properties = ["spring.main.allow-bean-definition-overriding=true"],
         classes = [DeterministicAnalyzerConfig])
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@ActiveProfiles("test")
 class EndToEndFlowTest extends Specification {
 
     @Autowired
@@ -33,7 +37,7 @@ class EndToEndFlowTest extends Specification {
         baseUrl = "http://localhost:${port}"
     }
 
-    def "webhook triggers visible end-to-end behaviour"() {
+    def "test leaderboard updated by webhook"() {
         given: "A simulated Git webhook payload for a code push"
         def payload = [
                 pullRequestUrl: "https://github.com/repos/con-solid-ate/pull/1",
