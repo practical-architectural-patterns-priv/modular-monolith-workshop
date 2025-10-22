@@ -30,7 +30,7 @@ class AnalysisModuleTest extends Specification {
     def "test analysis"() {
         given: "submission id and pull request url"
         def submissionId = 101L
-        def url = "https://github.com/example/repo/pull/1"
+        def url = "https://github.com/repos/con-solid-ate/pull/1"
 
         and: "a fake metrics result returned by analyzer"
         def metrics = new AnalysisMetrics(8, 3, 2, 1)
