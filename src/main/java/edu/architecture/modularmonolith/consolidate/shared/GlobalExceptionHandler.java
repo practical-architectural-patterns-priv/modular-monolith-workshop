@@ -16,7 +16,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleGeneric(Exception ex) {
         UUID errorId = UUID.randomUUID();
-        LOGGER.error("Error ID {}:{}", errorId, ex);
+        LOGGER.error("Error ID {}: {}", errorId, ex.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(String.format("Unexpected error occurred. Please contact administrator providing errorId: %s", errorId));
     }

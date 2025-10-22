@@ -18,12 +18,17 @@ public class Submission {
         this.url=url;
     }
 
+    protected Submission() {
+    }
+
     public Long getId(){
         return id;
     }
+
     public String getUserId(){
         return userId;
     }
+
     public String getUrl(){
         return url;
     }

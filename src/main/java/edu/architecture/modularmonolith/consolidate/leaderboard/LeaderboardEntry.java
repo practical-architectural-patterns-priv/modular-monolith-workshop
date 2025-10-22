@@ -16,8 +16,7 @@ public class LeaderboardEntry {
         this.totalPoints=totalPoints;
     }
 
-    public LeaderboardEntry() {
-
+    protected LeaderboardEntry() {
     }
 
     public String getUserId(){

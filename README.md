@@ -1,7 +1,7 @@
 # 🧪 Con-SOLID-Ate – Clean Code Gamification Platform (Backend)
 
 A backend component of a **clean-code gamification platform** designed to analyze code submissions, award points for adherence to SOLID principles, and maintain a leaderboard of developers.
-This repository contains the **server-side platform service** — the core logic, API endpoints, analysis pipeline, and leaderboard projection. It does **not** include the frontend UI.
+This repository contains the **server-side platform service** - the core logic, API endpoints, analysis pipeline, and leaderboard projection. It does **not** include the frontend UI.
 
 ---
 
@@ -177,12 +177,6 @@ C4Component
 
 ---
 
-Excellent — that will make the README feel complete and immediately clear for your workshop participants.
-Here’s an updated **README.md** section you can append to your Con-SOLID-Ate project.
-It presents a **visual directory tree** and explains what each package does — written in the same professional tone as the rest of your document.
-
----
-
 ### 🧩 Code Structure and Package Overview
 
 The Con-SOLID-Ate backend follows a **layered modular design**, where each package represents a domain module or a shared cross-cutting concern.  
@@ -231,6 +225,56 @@ The service will start on `http://localhost:8080`.
 
 ---
 
+## 🧪 Testing
+
+### Framework
+
+All automated tests in **Con-SOLID-Ate** are written using the **[Spock Framework](https://spockframework.org/)** - a BDD-style testing framework for Groovy.
+Spock tests follow the expressive `given / when / then` structure, enabling behavior-driven verification of both module and end-to-end scenarios.
+
+Each test class uses:
+
+```groovy
+@SpringBootTest(webEnvironment = RANDOM_PORT)
+```
+
+which means that:
+
+* the **entire Spring ApplicationContext** is started for every test,
+* all real beans and configurations are loaded (unless explicitly overridden),
+* tests execute against the same runtime setup as the production backend.
+
+This approach ensures realistic verification of how modules interact within the running monolith.
+
+---
+
+### Running Tests
+
+To execute all tests:
+
+```bash
+mvn clean test
+```
+
+Each test suite starts its own Spring context instance and performs real HTTP calls through `TestRestTemplate` to validate application behavior.
+
+---
+
+### Test Reports
+
+After successful test execution, HTML reports are automatically generated under:
+
+```
+target/spock-reports/
+├── summary.html
+└── SomeUseCaseTest.html
+```
+When running tests in IntelliJ, report can be displayed in a built-in local WebStorm server:
+  ```
+  http://localhost:63342/con-solid-ate/target/spock-reports/summary.html
+  ```
+---
+
 ## 📡 Usage
 
 ### 1. Simulate a Git webhook (code submission)
@@ -262,12 +306,3 @@ JDBC URL: `jdbc:h2:mem:cons`
 
 ---
 
-## 🧠 Notes for Users
-
-* This is the **backend** component of Con-SOLID-Ate. It exposes REST APIs and internal processing logic.
-* A frontend UI can be integrated separately to display leaderboards and user progress.
-* The MVP intentionally excludes peer reviews, badges, notifications, and admin configuration — these are planned as future extensions.
-
----
-
-Would you like me to now generate a **matching `README.md` for the GOOD version** (the refactored architecture), too — so you have them side by side for the workshop? (It’s often powerful to compare them.)
