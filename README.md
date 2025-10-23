@@ -1,4 +1,4 @@
-# 🧪 Con-SOLID-Ate – Clean Code Gamification Platform (Backend)
+# 🧪 Con-SOLID-Ate - Clean Code Gamification Platform (Backend)
 
 A backend component of a **clean-code gamification platform** designed to analyze code submissions, award points for adherence to SOLID principles, and maintain a leaderboard of developers.
 This repository contains the **server-side platform service** - the core logic, API endpoints, analysis pipeline, and leaderboard projection. It does **not** include the frontend UI.
@@ -12,10 +12,10 @@ This repository contains the **server-side platform service** - the core logic, 
 3. [Non-Functional Requirements](#non-functional-requirements)
 4. [System Design](#system-design)
 
-    * [C4 Level 1 – System Context](#c4-level-1--system-context)
-    * [C4 Level 2 – Container Diagram](#c4-level-2--container-diagram)
-    * [Sequence Diagram – Submission Flow](#sequence-diagram--submission-flow)
-    * [C4 Level 3 – Component Diagram](#c4-level-3--component-diagram)
+    * [C4 Level 1 - System Context](#c4-level-1--system-context)
+    * [C4 Level 2 - Container Diagram](#c4-level-2--container-diagram)
+    * [Sequence Diagram - Submission Flow](#sequence-diagram--submission-flow)
+    * [C4 Level 3 - Component Diagram](#c4-level-3--component-diagram)
 5. [Deployment](#deployment)
 6. [Usage](#usage)
 
@@ -68,7 +68,7 @@ The system evaluates code quality, checks adherence to SOLID principles, awards 
 
 ## 🧱 System Design
 
-### C4 Level 1 – System Context
+### C4 Level 1 - System Context
 
 ```mermaid
 C4Context
@@ -90,7 +90,7 @@ Developers view rankings and points through the frontend UI.
 
 ---
 
-### C4 Level 2 – Container Diagram
+### C4 Level 2 - Container Diagram
 
 > [!NOTE]
 > In the [C4 model](https://c4model.com/abstractions/container), a *Container* represents a deployable application or data source, **not** a Docker container.
@@ -117,7 +117,7 @@ C4Container
 
 ---
 
-### Sequence Diagram – Submission Flow
+### Sequence Diagram - Submission Flow
 
 ```mermaid
 sequenceDiagram
@@ -149,7 +149,7 @@ sequenceDiagram
 
 ---
 
-### C4 Level 3 – Component Diagram
+### C4 Level 3 - Component Diagram
 
 ```mermaid
 C4Component
