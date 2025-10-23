@@ -271,7 +271,7 @@ target/spock-reports/
 ```
 When running tests in IntelliJ, report can be displayed in a built-in local WebStorm server:
   ```
-  http://localhost:63342/con-solid-ate/target/spock-reports/summary.html
+  http://localhost:63342/modular-monolith-workshop/target/spock-reports/summary.html
   ```
 ---
 
