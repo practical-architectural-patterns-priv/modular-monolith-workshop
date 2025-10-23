@@ -12,16 +12,18 @@ This repository contains the **server-side platform service** - the core logic, 
 3. [Non-Functional Requirements](#non-functional-requirements)
 4. [System Design](#system-design)
 
-    * [C4 Level 1 - System Context](#c4-level-1--system-context)
-    * [C4 Level 2 - Container Diagram](#c4-level-2--container-diagram)
-    * [Sequence Diagram - Submission Flow](#sequence-diagram--submission-flow)
-    * [C4 Level 3 - Component Diagram](#c4-level-3--component-diagram)
-5. [Deployment](#deployment)
-6. [Usage](#usage)
+   * [C4 Level 1 - System Context](#c4-level-1--system-context)
+   * [C4 Level 2 - Container Diagram](#c4-level-2--container-diagram)
+   * [Sequence Diagram - Submission Flow](#sequence-diagram--submission-flow)
+   * [C4 Level 3 - Component Diagram](#c4-level-3--component-diagram)
+5. [Code Structure and Package Overview](#code-structure-and-package-overview)
+6. [Deployment](#deployment)
+7. [Testing](#testing)
+8. [Usage](#usage)
 
 ---
 
-## 📦 Overview
+## <div id="overview">📦 Overview</div>
 
 **Con-SOLID-Ate** is a backend service that enables developers to submit code (via Git push) for automated static analysis.
 The system evaluates code quality, checks adherence to SOLID principles, awards points, and maintains a global leaderboard.
@@ -30,30 +32,30 @@ The system evaluates code quality, checks adherence to SOLID principles, awards 
 
 ---
 
-## ✅ Functional Requirements
+## <div id="functional-requirements"> ✅ Functional Requirements
 
 1. **Code Submission & Intake**
 
-    * Accept code submissions via Git webhook.
-    * Support multiple languages and frameworks.
-    * Version code submissions and track history per user.
+   * Accept code submissions via Git webhook.
+   * Support multiple languages and frameworks.
+   * Version code submissions and track history per user.
 2. **Automated Static Analysis**
 
-    * Run static analysis on submitted code.
-    * Evaluate maintainability, complexity, duplication, and SOLID violations.
-    * Store raw metrics and results per submission.
+   * Run static analysis on submitted code.
+   * Evaluate maintainability, complexity, duplication, and SOLID violations.
+   * Store raw metrics and results per submission.
 3. **Points System**
 
-    * Award points for clean code and SOLID compliance.
-    * Maintain a points ledger per user.
+   * Award points for clean code and SOLID compliance.
+   * Maintain a points ledger per user.
 4. **Leaderboard & Progress Tracking**
 
-    * Display global leaderboard.
-    * Show user progress and recent achievements.
+   * Display global leaderboard.
+   * Show user progress and recent achievements.
 
 ---
 
-## 📈 Non-Functional Requirements
+## <div id="non-functional-requirements">📈 Non-Functional Requirements
 
 | Category           | Requirement                                                                                 |
 | ------------------ | ------------------------------------------------------------------------------------------- |
@@ -66,9 +68,9 @@ The system evaluates code quality, checks adherence to SOLID principles, awards 
 
 ---
 
-## 🧱 System Design
+## <div id="system-design">🧱 System Design</div>
 
-### C4 Level 1 - System Context
+### <div id="c4-level-1--system-context">C4 Level 1 - System Context</div>
 
 ```mermaid
 C4Context
@@ -90,7 +92,7 @@ Developers view rankings and points through the frontend UI.
 
 ---
 
-### C4 Level 2 - Container Diagram
+### <div id="c4-level-2--container-diagram">C4 Level 2 - Container Diagram</div>
 
 > [!NOTE]
 > In the [C4 model](https://c4model.com/abstractions/container), a *Container* represents a deployable application or data source, **not** a Docker container.
@@ -117,7 +119,7 @@ C4Container
 
 ---
 
-### Sequence Diagram - Submission Flow
+### <div id="sequence-diagram--submission-flow">Sequence Diagram - Submission Flow</div>
 
 ```mermaid
 sequenceDiagram
@@ -149,7 +151,7 @@ sequenceDiagram
 
 ---
 
-### C4 Level 3 - Component Diagram
+### <div id="c4-level-3--component-diagram">C4 Level 3 - Component Diagram</div>
 
 ```mermaid
 C4Component
@@ -177,7 +179,7 @@ C4Component
 
 ---
 
-### 🧩 Code Structure and Package Overview
+### <div id="code-structure-and-package-overview">🧩 Code Structure and Package Overview</div>
 
 The Con-SOLID-Ate backend follows a **layered modular design**, where each package represents a domain module or a shared cross-cutting concern.  
 This section provides an overview of the source code layout and explains the purpose of each part of the system.
@@ -201,7 +203,7 @@ src/
 ````
 ---
 
-## 🚀 Deployment
+## <div id="deployment">🚀 Deployment</div>
 
 This project is a standard **Spring Boot** backend and can be deployed as a standalone service or within your existing backend ecosystem.
 
@@ -215,7 +217,7 @@ This project is a standard **Spring Boot** backend and can be deployed as a stan
 ```bash
 mvn spring-boot:run
 ```
-or 
+or
 ```bash
 mvn clean package
 java -jar target/con-solid-ate-1.0.0.jar
@@ -225,7 +227,7 @@ The service will start on `http://localhost:8080`.
 
 ---
 
-## 🧪 Testing
+## <div id="testing">🧪 Testing</div>
 
 ### Framework
 
@@ -271,11 +273,11 @@ target/spock-reports/
 ```
 When running tests in IntelliJ, report can be displayed in a built-in local WebStorm server:
   ```
-  http://localhost:63342/modular-monolith-workshop/target/spock-reports/summary.html
+  http://localhost:63342/peap-priv-modular-monolith-workshop/target/spock-reports/summary.html
   ```
 ---
 
-## 📡 Usage
+##  <div id="usage"> 📡 Usage </div>
 
 ### 1. Simulate a Git webhook (code submission)
 
@@ -305,4 +307,3 @@ Visit: [http://localhost:8080/h2-console](http://localhost:8080/h2-console)
 JDBC URL: `jdbc:h2:mem:cons`
 
 ---
-
