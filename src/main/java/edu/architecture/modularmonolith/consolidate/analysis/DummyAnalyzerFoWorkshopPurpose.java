@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import java.util.Random;
 
 @Service
-public class DummyAnalyzerFoWorkshopPurpose implements Analysing {
+class DummyAnalyzerFoWorkshopPurpose implements Analysing {
     private static final Random RANDOM = new Random();
 
     @Override

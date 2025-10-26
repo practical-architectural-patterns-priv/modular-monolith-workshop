@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/webhook")
-public class WebhookController {
+class WebhookController {
 
     private final SubmissionService submissionService;
 

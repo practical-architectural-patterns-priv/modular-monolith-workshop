@@ -5,7 +5,8 @@ import edu.architecture.modularmonolith.consolidate.shared.ValidationUtils;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SubmissionService {
+public
+class SubmissionService {
     private final SubmissionRepository repo;
     private final AnalyzerService analyzerService;
 

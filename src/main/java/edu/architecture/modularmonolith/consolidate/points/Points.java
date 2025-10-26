@@ -5,7 +5,7 @@ import java.time.Instant;
 
 @Entity
 @Table(name="points_ledger")
-public class Points {
+class Points {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY) Long id;
     private String userId;

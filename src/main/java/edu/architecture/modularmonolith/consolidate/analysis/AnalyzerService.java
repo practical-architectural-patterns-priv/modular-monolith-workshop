@@ -7,7 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class AnalyzerService {
+public
+class AnalyzerService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AnalyzerService.class);
 

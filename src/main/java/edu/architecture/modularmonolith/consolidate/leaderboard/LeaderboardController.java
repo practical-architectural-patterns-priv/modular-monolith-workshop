@@ -8,7 +8,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/leaderboard")
-public class LeaderboardController {
+class LeaderboardController {
 
     private final LeaderboardRepository repository;
 

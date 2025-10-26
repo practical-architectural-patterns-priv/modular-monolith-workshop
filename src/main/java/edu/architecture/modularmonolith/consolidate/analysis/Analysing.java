@@ -1,5 +1,5 @@
 package edu.architecture.modularmonolith.consolidate.analysis;
 
-public interface Analysing {
+interface Analysing {
     AnalysisMetrics analyze(String repoUrl);
 }

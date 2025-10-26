@@ -1,3 +1,3 @@
 package edu.architecture.modularmonolith.consolidate.webhook;
 
-public record GithubWebhookPayload(String userId, String pullRequestUrl) {}
+record GithubWebhookPayload(String userId, String pullRequestUrl) {}
