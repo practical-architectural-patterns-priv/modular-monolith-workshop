@@ -1,10 +1,11 @@
-package edu.architecture.modularmonolith.consolidate.analysis;
+package edu.architecture.modularmonolith.consolidate.analysis.internal;
 
+import edu.architecture.modularmonolith.consolidate.analysis.api.AnalysisMetrics;
 import org.springframework.stereotype.Service;
 import java.util.Random;
 
 @Service
-public class DummyAnalyzerFoWorkshopPurpose implements Analysing {
+class DummyAnalyzerFoWorkshopPurpose implements Analysing {
     private static final Random RANDOM = new Random();
 
     @Override

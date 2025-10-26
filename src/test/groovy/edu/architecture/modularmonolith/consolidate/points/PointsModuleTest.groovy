@@ -1,10 +1,12 @@
 package edu.architecture.modularmonolith.consolidate.points
 
-import edu.architecture.modularmonolith.consolidate.analysis.AnalysisRepository
-import edu.architecture.modularmonolith.consolidate.analysis.AnalysisResult
-import edu.architecture.modularmonolith.consolidate.leaderboard.LeaderboardRepository
-import edu.architecture.modularmonolith.consolidate.submission.Submission
-import edu.architecture.modularmonolith.consolidate.submission.SubmissionRepository
+import edu.architecture.modularmonolith.consolidate.analysis.internal.AnalysisRepository
+import edu.architecture.modularmonolith.consolidate.analysis.internal.AnalysisResult
+import edu.architecture.modularmonolith.consolidate.leaderboard.internal.LeaderboardRepository
+import edu.architecture.modularmonolith.consolidate.points.internal.PointsRepository
+import edu.architecture.modularmonolith.consolidate.points.internal.PointsService
+import edu.architecture.modularmonolith.consolidate.submission.internal.Submission
+import edu.architecture.modularmonolith.consolidate.submission.internal.SubmissionRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.annotation.DirtiesContext

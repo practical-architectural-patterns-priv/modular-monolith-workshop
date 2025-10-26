@@ -1,5 +1,7 @@
 package edu.architecture.modularmonolith.consolidate.leaderboard
 
+import edu.architecture.modularmonolith.consolidate.leaderboard.internal.LeaderboardEntry
+import edu.architecture.modularmonolith.consolidate.leaderboard.internal.LeaderboardRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.domain.PageRequest

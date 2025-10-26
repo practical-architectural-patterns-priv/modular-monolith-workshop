@@ -1,6 +1,8 @@
 package edu.architecture.modularmonolith.consolidate.submission
 
-import edu.architecture.modularmonolith.consolidate.analysis.AnalyzerService
+import edu.architecture.modularmonolith.consolidate.analysis.internal.AnalyzerService
+import edu.architecture.modularmonolith.consolidate.submission.internal.SubmissionRepository
+import edu.architecture.modularmonolith.consolidate.submission.internal.SubmissionService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.annotation.DirtiesContext

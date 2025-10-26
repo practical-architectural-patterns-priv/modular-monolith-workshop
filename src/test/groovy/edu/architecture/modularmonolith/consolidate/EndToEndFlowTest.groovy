@@ -1,7 +1,7 @@
 package edu.architecture.modularmonolith.consolidate
 
-import edu.architecture.modularmonolith.consolidate.analysis.Analysing
-import edu.architecture.modularmonolith.consolidate.analysis.AnalysisMetrics
+import edu.architecture.modularmonolith.consolidate.analysis.api.AnalysisMetrics
+import edu.architecture.modularmonolith.consolidate.analysis.internal.Analysing
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.TestConfiguration

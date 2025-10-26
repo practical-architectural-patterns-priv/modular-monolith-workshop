@@ -1,6 +1,10 @@
 package edu.architecture.modularmonolith.consolidate.analysis
 
-import edu.architecture.modularmonolith.consolidate.points.PointsService
+import edu.architecture.modularmonolith.consolidate.analysis.api.AnalysisMetrics
+import edu.architecture.modularmonolith.consolidate.analysis.internal.Analysing
+import edu.architecture.modularmonolith.consolidate.analysis.internal.AnalysisRepository
+import edu.architecture.modularmonolith.consolidate.analysis.internal.AnalyzerService
+import edu.architecture.modularmonolith.consolidate.points.internal.PointsService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.annotation.DirtiesContext
