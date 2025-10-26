@@ -39,5 +39,6 @@ class PointsService {
         var leaderboard = leaderboardRepository.findById(submission.getUserId()).orElse(new LeaderboardEntry(submission.getUserId(), 0));
         leaderboard.add(finalScore);
         leaderboardRepository.save(leaderboard);
+        LOGGER.debug("Leaderboard for user {} updated. Current points: {}", leaderboard.getUserId(), leaderboard.getTotalPoints());
     }
 }
