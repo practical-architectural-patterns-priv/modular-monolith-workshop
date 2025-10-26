@@ -16,29 +16,28 @@ class PointsService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PointsService.class);
 
-    private final PointsRepository pointsRepo;
-    private final SubmissionRepository submissionRepo;
-    private final LeaderboardRepository leaderboardRepo;
+    private final PointsRepository pointsRepository;
+    private final SubmissionRepository submissionRepository;
+    private final LeaderboardRepository leaderboardRepository;
 
-    public PointsService(PointsRepository pointsRepo, SubmissionRepository submissionRepo, LeaderboardRepository leaderboardRepo) {
-        this.pointsRepo = pointsRepo;
-        this.submissionRepo = submissionRepo;
-        this.leaderboardRepo = leaderboardRepo;
+    public PointsService(PointsRepository pointsRepository, SubmissionRepository submissionRepository, LeaderboardRepository leaderboardRepository) {
+        this.pointsRepository = pointsRepository;
+        this.submissionRepository = submissionRepository;
+        this.leaderboardRepository = leaderboardRepository;
     }
 
     @Transactional
     public void awardPointsForSubmission(Long submissionId) {
-        Submission submission = submissionRepo.findById(submissionId).orElseThrow();
+        Submission submission = submissionRepository.findById(submissionId).orElseThrow();
 
-        var metrics = pointsRepo.findMetrics(submissionId);
+        var metrics = pointsRepository.findMetrics(submissionId);
         int finalScore = ScoringFormula.computeFinalScore(metrics.getMaintainabilityScore(), metrics.getComplexityScore(), metrics.getDuplicationScore(), metrics.getSolidViolations());
         LOGGER.debug("Final score calculated: {}", finalScore);
 
-        pointsRepo.save(new Points(submission.getUserId(), submissionId, finalScore));
+        pointsRepository.save(new Points(submission.getUserId(), submissionId, finalScore));
 
-        var leaderboard = leaderboardRepo.findById(submission.getUserId()).orElse(new LeaderboardEntry(submission.getUserId(), 0));
+        var leaderboard = leaderboardRepository.findById(submission.getUserId()).orElse(new LeaderboardEntry(submission.getUserId(), 0));
         leaderboard.add(finalScore);
-        leaderboardRepo.save(leaderboard);
+        leaderboardRepository.save(leaderboard);
     }
 }
-

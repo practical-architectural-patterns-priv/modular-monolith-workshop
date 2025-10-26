@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 @Service
 public
 class SubmissionService {
-    private final SubmissionRepository repo;
+    private final SubmissionRepository repository;
     private final AnalyzerService analyzerService;
 
-    public SubmissionService(SubmissionRepository repo, AnalyzerService analyzerService) {
-        this.repo = repo;
+    public SubmissionService(SubmissionRepository repository, AnalyzerService analyzerService) {
+        this.repository = repository;
         this.analyzerService = analyzerService;
     }
 
@@ -19,7 +19,7 @@ class SubmissionService {
         if (!ValidationUtils.isValidRepoUrl(url)) {
             throw new IllegalArgumentException("Invalid repo URL");
         }
-        Submission submission = repo.save(new Submission(userId, url));
+        Submission submission = repository.save(new Submission(userId, url));
         analyzerService.analyzeSubmission(submission.getId(), submission.getUrl());
         return submission;
     }
