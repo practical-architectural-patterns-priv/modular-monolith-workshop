@@ -20,7 +20,6 @@ class LeaderboardController {
 
     @GetMapping
     public List<LeaderboardEntry> getTopEntries(@RequestParam(name = "size", defaultValue = "5") int size) {
-        Pageable pageable = PageRequest.of(0, size);
         return service.findTopEntries(size);
     }
 }

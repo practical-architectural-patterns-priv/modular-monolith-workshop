@@ -7,9 +7,10 @@ import edu.architecture.modularmonolith.consolidate.shared.events.Subscribing;
 import edu.architecture.modularmonolith.consolidate.submission.api.SubmissionRegistered;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.time.Instant;
 
@@ -28,8 +29,9 @@ class AnalyzerService implements Subscribing<SubmissionRegistered> {
         this.eventBus = eventBus;
     }
 
-    @Transactional
-    @EventListener
+    @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @TransactionalEventListener
     public void onEvent(SubmissionRegistered submissionRegistered) {
         AnalysisMetrics metrics = analyzer.analyze(submissionRegistered.url());
         LOGGER.debug("Metrics calculated: {}", metrics);

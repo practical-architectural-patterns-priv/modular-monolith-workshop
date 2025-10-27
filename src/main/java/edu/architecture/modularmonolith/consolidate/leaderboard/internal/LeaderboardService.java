@@ -2,16 +2,17 @@ package edu.architecture.modularmonolith.consolidate.leaderboard.internal;
 
 import edu.architecture.modularmonolith.consolidate.points.api.PointsAwarded;
 import edu.architecture.modularmonolith.consolidate.shared.events.Subscribing;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.event.EventListener;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.util.List;
 
-@Component
+@Service
 public class LeaderboardService implements Subscribing<PointsAwarded> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LeaderboardService.class);
@@ -23,7 +24,7 @@ public class LeaderboardService implements Subscribing<PointsAwarded> {
     }
 
     @Override
-    @EventListener
+    @TransactionalEventListener
     public void onEvent(PointsAwarded pointsAwarded) {
         var current = repository.findById(pointsAwarded.userId()).orElse(new LeaderboardEntry(pointsAwarded.userId(), 0));
         current.add(pointsAwarded.score());

@@ -20,7 +20,7 @@ class WebhookController {
     @PostMapping("/github")
     public ResponseEntity<String> handlePush(@RequestBody GithubWebhookPayload payload) {
         String submissionKey = submissionService.create(payload.userId(), payload.pullRequestUrl());
-        return ResponseEntity.accepted().body(submissionKey);
+        return ResponseEntity.accepted().build();
     }
 }
 
