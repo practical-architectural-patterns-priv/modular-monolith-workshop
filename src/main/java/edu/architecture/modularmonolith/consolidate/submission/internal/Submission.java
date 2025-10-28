@@ -42,4 +42,7 @@ class Submission {
         return createdAt;
     }
 
+    public String getBusinessKey(){
+        return businessKey;
+    }
 }
