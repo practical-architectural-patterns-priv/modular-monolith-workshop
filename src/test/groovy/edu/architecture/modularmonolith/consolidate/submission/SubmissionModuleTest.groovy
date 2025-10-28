@@ -3,6 +3,7 @@ package edu.architecture.modularmonolith.consolidate.submission
 import edu.architecture.modularmonolith.consolidate.analysis.AnalyzerService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.bean.override.mockito.MockitoBean
@@ -19,7 +20,7 @@ class SubmissionModuleTest extends Specification {
     SubmissionService submissionService
 
     @Autowired
-    SubmissionRepository submissionRepository
+    JdbcTemplate jdbcTemplate
 
     @MockitoBean
     AnalyzerService analyzerService
@@ -33,9 +34,11 @@ class SubmissionModuleTest extends Specification {
         def submission = submissionService.create(userId, repoUrl)
 
         then: "submission is persisted"
-        submissionRepository.count() == 1
-        submission.getUserId() == userId
-        submission.getUrl() == repoUrl
+        def persistedSubmissions = jdbcTemplate.queryForList("SELECT * FROM submissions")
+        persistedSubmissions.size() == 1
+        def persistedSubmission = persistedSubmissions.first()
+        persistedSubmission.user_id == userId
+        persistedSubmission.url == repoUrl
 
         and: "analyzer is triggered"
         verify(analyzerService, times(1)).analyzeSubmission(submission.id, repoUrl)
@@ -50,6 +53,7 @@ class SubmissionModuleTest extends Specification {
         ex.message == "Invalid repo URL"
 
         and: "no submissions are stored"
-        submissionRepository.count() == 0
+        def persistedSubmissions = jdbcTemplate.queryForList("SELECT * FROM submissions")
+        persistedSubmissions.size() == 0
     }
 }

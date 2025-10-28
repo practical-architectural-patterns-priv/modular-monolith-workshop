@@ -1,12 +1,8 @@
 package edu.architecture.modularmonolith.consolidate.points
 
-import edu.architecture.modularmonolith.consolidate.analysis.AnalysisRepository
-import edu.architecture.modularmonolith.consolidate.analysis.AnalysisResult
-import edu.architecture.modularmonolith.consolidate.leaderboard.LeaderboardRepository
-import edu.architecture.modularmonolith.consolidate.submission.Submission
-import edu.architecture.modularmonolith.consolidate.submission.SubmissionRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import spock.lang.Specification
@@ -21,38 +17,31 @@ class PointsModuleTest extends Specification {
     PointsService pointsService
 
     @Autowired
-    PointsRepository pointsRepository
-
-    @Autowired
-    SubmissionRepository submissionRepository
-
-    @Autowired
-    LeaderboardRepository leaderboardRepository
-
-    @Autowired
-    AnalysisRepository analysisRepository;
+    JdbcTemplate jdbcTemplate
 
     def "test award points"() {
         given: "a submission already stored in repository"
-        def submission = new Submission("murray.the.talking.skull@monkeyisland.com", "https://github.com/repos/con-solid-ate/pull/1")
-        submission = submissionRepository.save(submission)
+        def submissionId = 101L
+        def userId = "murray.the.talking.skull@monkeyisland.com"
+        jdbcTemplate.execute("INSERT INTO submissions(id, url, user_id) VALUES (${submissionId},'https://github.com/repos/con-solid-ate/pull/1', '${userId}')")
 
         and: "metrics for this submission already stored too"
-        def metrics = new AnalysisResult(submission.id, 8, 2,1 ,0);
-        analysisRepository.save(metrics);
+        jdbcTemplate.execute("INSERT INTO analysis_results(submission_id, maintainability_score, complexity_score, duplication_score, solid_violations) VALUES (${submissionId},8, 2, 1 ,0)")
 
         when: "points are awarded for submission"
-        pointsService.awardPointsForSubmission(submission.id)
+        pointsService.awardPointsForSubmission(submissionId)
 
         then: "points record is persisted"
-        def allPoints = pointsRepository.findAll()
-        allPoints.size() == 1
-        allPoints.first().userId == "murray.the.talking.skull@monkeyisland.com"
-        allPoints.first().points == 72
+        def persistedPoints = jdbcTemplate.queryForList("SELECT * FROM points_ledger")
+        persistedPoints.size() == 1
+        persistedPoints.first().user_id == userId
+        persistedPoints.first().points == 72
 
-        and: "leaderboard is created or updated"
-        def leaderboard = leaderboardRepository.findById("murray.the.talking.skull@monkeyisland.com").orElse(null)
-        leaderboard != null
-        leaderboard.totalPoints == allPoints.first().points
+        and: "leaderboard is updated"
+        def persistedLeaderboards = jdbcTemplate.queryForList("SELECT * FROM leaderboard")
+        persistedLeaderboards.size() == 1
+        def persistedLeaderboard = persistedLeaderboards.first()
+        persistedLeaderboard.user_id == userId
+        persistedLeaderboard.total_points == persistedPoints.first().points
     }
 }

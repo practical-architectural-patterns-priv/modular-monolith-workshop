@@ -11,8 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public
-class PointsService {
+public class PointsService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PointsService.class);
 
