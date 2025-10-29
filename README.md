@@ -158,23 +158,50 @@ C4Component
    UpdateLayoutConfig($c4ShapeInRow="3",$c4ComponentInRow="3")
 
    System_Boundary(platform, "Platform Service"){
+
       Component(submissions, "Submission Coordinator", "Module", "Webhook intake; validate & register submission")
       Component(analysis, "Analysis Runner", "Module", "Fetch code; run analyzers; collect metrics")
+
+      ComponentQueue(bus, "Internal Message Bus", "Queue", "Delivers domain events between components (in-process pub/sub)")
+
       Component(points, "Points Engine", "Module", "Derive points from metrics; append ledger")
       Component(leaderboard, "Leaderboard", "Module", "Maintain leaderboard view; expose leaderboard endpoint")
+
    }
 
    Container_Ext(repo, "Git Host", "VCS")
    Container_Ext(db, "Data Store", "Database")
 
+   Rel(submissions, bus, "Publish SubmissionRegistered")
+   Rel(bus, analysis, "Dispatch SubmissionRegistered")
+
+   Rel(analysis, bus, "Publish AnalysisCompleted")
+   Rel(bus, points, "Dispatch <br> AnalysisCompleted")
+
+   Rel(points, bus, "Publish <br> PointsAwarded")
+   Rel(bus, leaderboard, "Dispatch PointsAwarded")
+
+   Rel(analysis, repo, "Clone / fetch source")
+   Rel(analysis, db, "Persist metrics")
+
+   Rel(points, db, "Persist points ledger")
+
    Rel(repo, submissions, "POST /webhook")
-   Rel(submissions, analysis, "Analyze submission")
-   Rel(analysis, repo, "Clone / fetch")
-   Rel(analysis, points, "Provide metrics")
    Rel(points, db, "Store points")
-   Rel(points, leaderboard, "Notify points awarded")
    Rel(leaderboard, db, "Update leaderboard")
    Rel(submissions, db, "Store submissions")
+
+   UpdateRelStyle(bus, analysis, $offsetY="30", $offsetX="-100")
+   UpdateRelStyle(analysis, bus, $offsetY="-10", $offsetX="10")
+
+   UpdateRelStyle(points, bus, $offsetY="-30", $offsetX="-30")
+   UpdateRelStyle(bus, points, $offsetY="30", $offsetX="-40")
+
+   UpdateRelStyle(leaderboard, db, $offsetY="290", $offsetX="-160")
+   UpdateRelStyle(points, db, $offsetY="190", $offsetX="60")
+   UpdateRelStyle(analysis, db, $offsetY="90", $offsetX="10")
+   UpdateRelStyle(submissions, db, $offsetY="90", $offsetX="-110")
+   UpdateRelStyle(analysis, repo, $offsetY="90", $offsetX="70")
 ```
 
 ---
@@ -188,7 +215,6 @@ This section provides an overview of the source code layout and explains the pur
 src/
 ├── main/
 │   ├── java/edu/architecture/modularmonolith/consolidate/
-│   │   ├── webhook/                # Handles Git webhook intake (entry point)
 │   │   ├── submission/             # Manages submission lifecycle and metadata
 │   │   ├── analysis/               # Executes static analysis jobs and collects metrics
 │   │   ├── points/                 # Calculates points and maintains points ledger
@@ -201,6 +227,11 @@ src/
 └── test/
     └──groovy/                      # End-to-end Spock BDD tests
 ````
+
+Each module package contains two sub-packages:
+- **api** - represents module public interface that can be levaraged by other modules
+- **internal** - represents module internals that cannot be used outside it
+
 ---
 
 ## <div id="deployment">🚀 Deployment</div>
