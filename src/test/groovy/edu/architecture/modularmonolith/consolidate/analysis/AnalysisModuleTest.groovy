@@ -6,12 +6,13 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.context.bean.override.mockito.MockitoBean
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean
 import spock.lang.Specification
 
 import static org.mockito.Mockito.*
 
-@SpringBootTest
+@SpringBootTest(properties = ["spring.main.allow-bean-definition-overriding=true"],
+        classes = [DeterministicAnalyzerConfig])
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @ActiveProfiles("test")
 class AnalysisModuleTest extends Specification {
@@ -22,21 +23,14 @@ class AnalysisModuleTest extends Specification {
     @Autowired
     JdbcTemplate jdbcTemplate
 
-    @MockitoBean
+    @MockitoSpyBean
     PointsService pointsService
-
-    @MockitoBean
-    Analysing analyzing
 
     def "test analysis"() {
         given: "submission with id and pull request url exists"
         def submissionId = 101L
         def url = "https://github.com/repos/con-solid-ate/pull/1"
         jdbcTemplate.execute("INSERT INTO submissions(id, url, user_id) VALUES (${submissionId},'${url}', 'ghost.pirate.lechuck@monkeyisland.com')")
-
-        and: "a fake metrics result returned by analyzer"
-        def metrics = new AnalysisMetrics(8, 3, 2, 1)
-        when(analyzing.analyze(url)).thenReturn(metrics)
 
         when: "analysis is executed"
         analyzerService.analyzeSubmission(submissionId, url)

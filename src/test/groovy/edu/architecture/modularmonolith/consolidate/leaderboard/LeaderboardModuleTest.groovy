@@ -3,6 +3,7 @@ package edu.architecture.modularmonolith.consolidate.leaderboard
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.domain.PageRequest
+import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import spock.lang.Specification
@@ -15,11 +16,14 @@ class LeaderboardModuleTest extends Specification {
     @Autowired
     LeaderboardRepository leaderboardRepository
 
+    @Autowired
+    JdbcTemplate jdbcTemplate
+
     def "test leaderboard entries retrieval ordered by points"() {
         given: "some users with different total points"
-        leaderboardRepository.save(new LeaderboardEntry("ghost.pirate.lechuck@monkeyisland.com", 300))
-        leaderboardRepository.save(new LeaderboardEntry("murray.the.talking.skull@monkeyisland.com", 500))
-        leaderboardRepository.save(new LeaderboardEntry("guybrush.threepwood@monkeyisland.com", 200))
+        jdbcTemplate.execute("INSERT INTO leaderboard(user_id, total_points) VALUES ('ghost.pirate.lechuck@monkeyisland.com', 300)")
+        jdbcTemplate.execute("INSERT INTO leaderboard(user_id, total_points) VALUES ('murray.the.talking.skull@monkeyisland.com', 500)")
+        jdbcTemplate.execute("INSERT INTO leaderboard(user_id, total_points) VALUES ('guybrush.threepwood@monkeyisland.com', 200)")
 
         when: "top entries are requested with size limit"
         def result = leaderboardRepository.findTopEntries(PageRequest.of(0, 2))
@@ -32,26 +36,31 @@ class LeaderboardModuleTest extends Specification {
 
     def "test points accumulation for existing user"() {
         given: "an existing leaderboard entry"
-        def entry = new LeaderboardEntry("guybrush.threepwood@monkeyisland.com", 100)
-        leaderboardRepository.save(entry)
+        def userId = "guybrush.threepwood@monkeyisland.com"
+        jdbcTemplate.execute("INSERT INTO leaderboard(user_id, total_points) VALUES ('${userId}', 100)")
 
         when: "points are added"
+        def entry = leaderboardRepository.findById(userId).orElseThrow()
         entry.add(250)
         leaderboardRepository.save(entry)
 
         then: "total points reflect updated score"
-        def updated = leaderboardRepository.findById("guybrush.threepwood@monkeyisland.com").orElseThrow()
-        updated.totalPoints == 350
+        def persistedLeaderboardEntries = jdbcTemplate.queryForList("SELECT * FROM leaderboard")
+        persistedLeaderboardEntries.size() == 1
+        persistedLeaderboardEntries.first().user_id == userId
+        persistedLeaderboardEntries.first().total_points == 350
     }
 
     def "test leaderboard entry creation for new user"() {
         when: "a new leaderboard entry is created"
-        leaderboardRepository.save(new LeaderboardEntry("herman.toothrot@monkeyisland.com", 150))
+        def userId = "herman.toothrot@monkeyisland.com"
+        def points = 150
+        leaderboardRepository.save(new LeaderboardEntry(userId, points))
 
-        then: "entry can be retrieved"
-        def fetched = leaderboardRepository.findById("herman.toothrot@monkeyisland.com").orElse(null)
-        fetched != null
-        fetched.userId == "herman.toothrot@monkeyisland.com"
-        fetched.totalPoints == 150
+        then: "leaderboard is updated"
+        def persistedLeaderboardEntries = jdbcTemplate.queryForList("SELECT * FROM leaderboard")
+        persistedLeaderboardEntries.size() == 1
+        persistedLeaderboardEntries.first().user_id == userId
+        persistedLeaderboardEntries.first().total_points == points
     }
 }

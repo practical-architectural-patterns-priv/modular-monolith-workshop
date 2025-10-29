@@ -6,7 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.context.bean.override.mockito.MockitoBean
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean
 import spock.lang.Specification
 
 import static org.mockito.Mockito.*
@@ -22,7 +22,7 @@ class SubmissionModuleTest extends Specification {
     @Autowired
     JdbcTemplate jdbcTemplate
 
-    @MockitoBean
+    @MockitoSpyBean
     AnalyzerService analyzerService
 
     def "test create submission and trigger analysis"() {
