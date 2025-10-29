@@ -38,7 +38,7 @@ class PointsService implements Subscribing<AnalysisCompleted> {
         LOGGER.debug("Final score calculated: {}", finalScore);
 
         repository.save(new Points(analysisCompleted.userId(), analysisCompleted.submissionKey(), finalScore));
-        eventBus.publish(new PointsAwarded(analysisCompleted.userId(), analysisCompleted.submissionKey(), finalScore, Instant.now()));
+        eventBus.publish(new PointsAwarded(analysisCompleted.userId(), finalScore, Instant.now()));
     }
 }
 

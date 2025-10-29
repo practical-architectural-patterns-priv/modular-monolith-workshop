@@ -4,6 +4,6 @@ import edu.architecture.modularmonolith.consolidate.shared.events.Publishable;
 
 import java.time.Instant;
 
-public record PointsAwarded(String userId, String submissionKey, int score, Instant occurredAt)
+public record PointsAwarded(String userId, int score, Instant occurredAt)
         implements Publishable {}
 

@@ -1,12 +1,14 @@
-package edu.architecture.modularmonolith.consolidate.submission.internal
+package edu.architecture.modularmonolith.consolidate.submission
 
 import edu.architecture.modularmonolith.consolidate.shared.events.EventBus
 import edu.architecture.modularmonolith.consolidate.submission.api.SubmissionRegistered
+import edu.architecture.modularmonolith.consolidate.submission.internal.SubmissionService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.context.bean.override.mockito.MockitoBean
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean
 import spock.lang.Specification
 import static org.mockito.Mockito.*
 
@@ -20,9 +22,9 @@ class SubmissionModuleTest extends Specification {
     SubmissionService submissionService
 
     @Autowired
-    SubmissionRepository submissionRepository
+    JdbcTemplate jdbcTemplate
 
-    @MockitoBean
+    @MockitoSpyBean
     EventBus eventBus
 
     def "test create submission and publish event"() {
@@ -34,11 +36,11 @@ class SubmissionModuleTest extends Specification {
         def businessKey = submissionService.create(userId, repoUrl)
 
         then: "submission is persisted"
-        submissionRepository.count() == 1
-        def submission = submissionRepository.findAll().first()
-        submission.businessKey == businessKey;
-        submission.userId == userId
-        submission.getUrl() == repoUrl
+        def persistedSubmissions = jdbcTemplate.queryForList("SELECT * FROM submissions")
+        persistedSubmissions.size() == 1
+        def persistedSubmission = persistedSubmissions.first()
+        persistedSubmission.user_id == userId
+        persistedSubmission.url == repoUrl
 
         and: "event is published"
         verify(eventBus, times(1)).publish( isA(SubmissionRegistered.class))
@@ -53,7 +55,8 @@ class SubmissionModuleTest extends Specification {
         ex.message == "Invalid repo URL"
 
         and: "no submissions are stored"
-        submissionRepository.count() == 0
+        def persistedSubmissions = jdbcTemplate.queryForList("SELECT * FROM submissions")
+        persistedSubmissions.size() == 0
 
         and: "no event is published"
         verifyNoInteractions(eventBus)

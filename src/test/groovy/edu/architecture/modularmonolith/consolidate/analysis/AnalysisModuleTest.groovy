@@ -1,20 +1,28 @@
 package edu.architecture.modularmonolith.consolidate.analysis
 
-import edu.architecture.modularmonolith.consolidate.analysis.api.AnalysisMetrics
-import edu.architecture.modularmonolith.consolidate.analysis.internal.Analysing
-import edu.architecture.modularmonolith.consolidate.analysis.internal.AnalysisRepository
+import edu.architecture.modularmonolith.consolidate.analysis.api.AnalysisCompleted
 import edu.architecture.modularmonolith.consolidate.analysis.internal.AnalyzerService
-import edu.architecture.modularmonolith.consolidate.points.internal.PointsService
+import edu.architecture.modularmonolith.consolidate.analysis.internal.DeterministicAnalyzerConfig
+import edu.architecture.modularmonolith.consolidate.shared.events.EventBus
+import edu.architecture.modularmonolith.consolidate.submission.api.SubmissionRegistered
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.context.bean.override.mockito.MockitoBean
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean
+import org.springframework.transaction.support.TransactionTemplate
 import spock.lang.Specification
+import spock.util.concurrent.PollingConditions
 
-import static org.mockito.Mockito.*
+import java.time.Instant
 
-@SpringBootTest
+import static org.mockito.ArgumentMatchers.isA
+import static org.mockito.Mockito.times
+import static org.mockito.Mockito.verify
+
+@SpringBootTest(properties = ["spring.main.allow-bean-definition-overriding=true"],
+        classes = [DeterministicAnalyzerConfig])
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @ActiveProfiles("test")
 class AnalysisModuleTest extends Specification {
@@ -23,40 +31,37 @@ class AnalysisModuleTest extends Specification {
     AnalyzerService analyzerService
 
     @Autowired
-    AnalysisRepository analysisRepository
+    JdbcTemplate jdbcTemplate
 
-    @MockitoBean
-    PointsService pointsService
+    @Autowired
+    TransactionTemplate transactionTemplate
 
-    @MockitoBean
-    Analysing analyzing
+    @MockitoSpyBean
+    EventBus eventBus
 
     def "test analysis"() {
-        given: "submission id and pull request url"
-        def submissionId = 101L
-        def url = "https://github.com/repos/con-solid-ate/pull/1"
+        when: "submission is registered"
+        def submissionKey = "977213cd-4f2d-4373-98d3-d47be2b030f1"
+        transactionTemplate.execute { status ->
+            eventBus.publish(new SubmissionRegistered(
+                    submissionKey, "ghost.pirate.lechuck@monkeyisland.com", "https://github.com/repos/con-solid-ate/pull/1", Instant.now()))
+        }
 
-        and: "a fake metrics result returned by analyzer"
-        def metrics = new AnalysisMetrics(8, 3, 2, 1)
-        when(analyzing.analyze(url)).thenReturn(metrics)
+        then: "metrics corresponding to analyzer output are eventually persisted"
+        new PollingConditions(timeout: 5).eventually {
+            def persistedAnalyses = jdbcTemplate.queryForList("SELECT * FROM analysis_results")
+            persistedAnalyses.size() == 1
 
-        when: "analysis is executed"
-        analyzerService.analyzeSubmission(submissionId, url)
+            def saved = persistedAnalyses.first()
+            saved.submission_key == submissionKey
+            saved.maintainability_score == 8
+            saved.complexity_score == 3
+            saved.duplication_score == 2
+            saved.solid_violations == 1
+        }
 
-        then: "metrics are persisted"
-        def results = analysisRepository.findAll()
-        results.size() == 1
-
-        and: "stored metrics correspond to analyzer output"
-        def saved = results.first()
-        saved.submissionId == submissionId
-        saved.maintainabilityScore == 8
-        saved.complexityScore == 3
-        saved.duplicationScore == 2
-        saved.solidViolations == 1
-
-        and: "points awarding is triggered"
-        verify(pointsService, times(1)).awardPointsForSubmission(submissionId)
+        and: "event is published"
+        verify(eventBus, times(1)).publish(isA(AnalysisCompleted.class))
     }
 }
 

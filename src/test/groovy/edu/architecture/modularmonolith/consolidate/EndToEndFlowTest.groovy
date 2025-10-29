@@ -1,13 +1,10 @@
 package edu.architecture.modularmonolith.consolidate
 
-import edu.architecture.modularmonolith.consolidate.analysis.api.AnalysisMetrics
-import edu.architecture.modularmonolith.consolidate.analysis.internal.Analysing
+import edu.architecture.modularmonolith.consolidate.analysis.internal.DeterministicAnalyzerConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.boot.test.web.server.LocalServerPort
-import org.springframework.context.annotation.Bean
 import org.springframework.http.HttpStatus
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.test.annotation.DirtiesContext
@@ -57,20 +54,6 @@ class EndToEndFlowTest extends Specification {
         then: "The leaderboard lists the user with awarded points"
         def entry = leaderboard.find { it.userId == "guybrush.threepwood@monkeyisland.com" }
         entry != null
-        entry.totalPoints == 72
-    }
-}
-
-@TestConfiguration
-class DeterministicAnalyzerConfig {
-
-    @Bean
-    static Analysing dummyAnalyzerFoWorkshopPurpose() {
-        return (url) -> new AnalysisMetrics(
-                9,
-                1,
-                5,
-                1
-        );
+        entry.totalPoints == 62
     }
 }

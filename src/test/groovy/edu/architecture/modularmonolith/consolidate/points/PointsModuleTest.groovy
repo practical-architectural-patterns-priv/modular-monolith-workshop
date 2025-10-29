@@ -1,17 +1,25 @@
 package edu.architecture.modularmonolith.consolidate.points
 
-import edu.architecture.modularmonolith.consolidate.analysis.internal.AnalysisRepository
-import edu.architecture.modularmonolith.consolidate.analysis.internal.AnalysisResult
-import edu.architecture.modularmonolith.consolidate.leaderboard.internal.LeaderboardRepository
-import edu.architecture.modularmonolith.consolidate.points.internal.PointsRepository
+import edu.architecture.modularmonolith.consolidate.analysis.api.AnalysisCompleted
+import edu.architecture.modularmonolith.consolidate.analysis.api.AnalysisMetrics
+import edu.architecture.modularmonolith.consolidate.points.api.PointsAwarded
 import edu.architecture.modularmonolith.consolidate.points.internal.PointsService
-import edu.architecture.modularmonolith.consolidate.submission.internal.Submission
-import edu.architecture.modularmonolith.consolidate.submission.internal.SubmissionRepository
+import edu.architecture.modularmonolith.consolidate.shared.events.EventBus
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean
+import org.springframework.transaction.support.TransactionTemplate
 import spock.lang.Specification
+import spock.util.concurrent.PollingConditions
+
+import java.time.Instant
+
+import static org.mockito.ArgumentMatchers.isA
+import static org.mockito.Mockito.times
+import static org.mockito.Mockito.verify
 
 
 @SpringBootTest
@@ -23,38 +31,38 @@ class PointsModuleTest extends Specification {
     PointsService pointsService
 
     @Autowired
-    PointsRepository pointsRepository
+    JdbcTemplate jdbcTemplate
 
     @Autowired
-    SubmissionRepository submissionRepository
+    TransactionTemplate transactionTemplate
 
-    @Autowired
-    LeaderboardRepository leaderboardRepository
-
-    @Autowired
-    AnalysisRepository analysisRepository;
+    @MockitoSpyBean
+    EventBus eventBus
 
     def "test award points"() {
-        given: "a submission already stored in repository"
-        def submission = new Submission("murray.the.talking.skull@monkeyisland.com", "https://github.com/repos/con-solid-ate/pull/1")
-        submission = submissionRepository.save(submission)
-
-        and: "metrics for this submission already stored too"
-        def metrics = new AnalysisResult(submission.id, 8, 2,1 ,0);
-        analysisRepository.save(metrics);
-
-        when: "points are awarded for submission"
-        pointsService.awardPointsForSubmission(submission.id)
+         when: "analysis is completed"
+         def submissionKey = "977213cd-4f2d-4373-98d3-d47be2b030f1"
+         def analysisMetrics = new AnalysisMetrics(
+                 8,
+                 3,
+                 2,
+                 1
+         )
+         def userId = "ghost.pirate.lechuck@monkeyisland.com"
+         transactionTemplate.execute { status ->
+             eventBus.publish(new AnalysisCompleted(
+                     submissionKey, userId, analysisMetrics, Instant.now()))
+         }
 
         then: "points record is persisted"
-        def allPoints = pointsRepository.findAll()
-        allPoints.size() == 1
-        allPoints.first().userId == "murray.the.talking.skull@monkeyisland.com"
-        allPoints.first().points == 72
+        new PollingConditions(timeout: 5).eventually {
+            def persistedPoints = jdbcTemplate.queryForList("SELECT * FROM points_ledger")
+            persistedPoints.size() == 1
+            persistedPoints.first().user_id == userId
+            persistedPoints.first().points == 62
+        }
 
-        and: "leaderboard is created or updated"
-        def leaderboard = leaderboardRepository.findById("murray.the.talking.skull@monkeyisland.com").orElse(null)
-        leaderboard != null
-        leaderboard.totalPoints == allPoints.first().points
+        and: "event is published"
+        verify(eventBus, times(1)).publish(isA(PointsAwarded.class))
     }
 }
