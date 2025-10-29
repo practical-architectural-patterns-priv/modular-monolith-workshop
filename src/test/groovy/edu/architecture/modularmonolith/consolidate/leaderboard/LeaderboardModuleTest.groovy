@@ -33,7 +33,6 @@ class LeaderboardModuleTest extends Specification {
 
     def "test leaderboard entries retrieval ordered by points"() {
         given: "some users with different total points"
-        def userId = "guybrush.threepwood@monkeyisland.com"
         jdbcTemplate.execute("INSERT INTO leaderboard(user_id, total_points) VALUES ('ghost.pirate.lechuck@monkeyisland.com', 300)")
         jdbcTemplate.execute("INSERT INTO leaderboard(user_id, total_points) VALUES ('murray.the.talking.skull@monkeyisland.com', 500)")
         jdbcTemplate.execute("INSERT INTO leaderboard(user_id, total_points) VALUES ('guybrush.threepwood@monkeyisland.com', 200)")
