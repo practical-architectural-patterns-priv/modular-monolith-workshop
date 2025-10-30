@@ -1,6 +1,6 @@
 # 🧱 Module Fundamentals & Key Patterns
 
-## What is a Module? 🤔 (5 min)
+## What is a Module? 🤔 
 
 * It's **NOT** just a folder or namespace!
 * It's a **Bounded Context** (DDD) – a cohesive part of the business domain with its own language.

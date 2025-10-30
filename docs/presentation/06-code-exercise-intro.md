@@ -14,7 +14,7 @@ This is an intentionally designed **"wannabe" monolith** – it looks good on th
 
 ---
 
-## 🕵️‍♀️ Your Mission (Breakout Rooms - 25 min)
+## 🕵️‍♀️ Your Mission 
 
 We'll split into groups. Your task is to diagnose this project and find where modularity **breaks down**.
 
@@ -34,3 +34,6 @@ We'll split into groups. Your task is to diagnose this project and find where mo
 * 📢 Are **events** used where decoupling would be beneficial?
 
 Be ready to share your findings when we return!
+
+**⌛ Let's spend up to 25 minutes on this task**
+

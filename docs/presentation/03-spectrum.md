@@ -18,7 +18,7 @@ There's no single "best" style. It's a spectrum of choices and trade-offs.
   "clusterBorderColor":"#000000"
 }}}%%
 graph TD
-    subgraph Classic Monolith: single deployment unit
+    subgraph Classic Monolith: single deployment unit 
         direction LR
         API --> Logic;
         Logic --> DataAccess;
@@ -39,7 +39,7 @@ graph TD
   "clusterBorderColor":"#000000"
 }}}%%
 graph 
-    subgraph Modular Monolith: single deployment unit
+    subgraph Modular Monolith: \n single deployment unit
         direction TB
         subgraph ModuleA
             direction LR

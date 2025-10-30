@@ -5,7 +5,7 @@ Welcome back!
 
 ---
 
-## 💡 What Did We Learn? Redesign Insights (10 min)
+## 💡 What Did We Learn? Redesign Insights
 
 * **Asynchronous Communication:** How did events help decouple the flow?
 * **Explicit Contracts:** Is it clearer now how modules *should* interact?

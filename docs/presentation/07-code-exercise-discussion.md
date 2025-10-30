@@ -2,7 +2,7 @@
 
 Welcome back!
 
-**Let's Share Discoveries (10 min):**
+**Let's Share Discoveries:**
 
 Now, let each representative from each group to briefly share **3 key problems** you identified
 
