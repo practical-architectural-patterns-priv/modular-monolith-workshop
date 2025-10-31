@@ -10,7 +10,7 @@ Before we discuss *problems* or *solutions*, let's establish a common, factual v
 
 ```mermaid
 C4Component
-    UpdateLayoutConfig($c4ShapeInRow="1",$c4ContainerInRow="1")
+    UpdateLayoutConfig($c4ShapeInRow="1",$c4BoundaryInRow="1")
 
     Boundary(App, "Classic Monolith","Single Deployment Unit") {
         Component(API, "API Layer", "e.g., Web Controllers")
@@ -44,7 +44,7 @@ C4Component
 
 ```mermaid
 C4Component
-    UpdateLayoutConfig($c4ShapeInRow="1",$c4ContainerInRow="3")
+    UpdateLayoutConfig($c4ShapeInRow="1",$c4BoundaryInRow="3")
 
     Boundary(ServiceA_Boundary, "Service A", "Single Deployment Unit") {
         Component(API_A, "API Layer", "e.g., Web Controllers")
@@ -126,7 +126,7 @@ C4Component
 
 ```mermaid
 C4Component
-    UpdateLayoutConfig($c4ShapeInRow="1",$c4ContainerInRow="3")
+    UpdateLayoutConfig($c4ShapeInRow="1",$c4BoundaryInRow="3")
 
     Boundary(layout_helper1, "",""){
         Component(layout_helper2, "", "")

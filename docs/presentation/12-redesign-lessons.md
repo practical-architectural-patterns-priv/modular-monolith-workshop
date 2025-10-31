@@ -2,7 +2,6 @@
 
 Welcome back!
 
-
 ---
 
 ## 💡 What Did We Learn? Redesign Insights

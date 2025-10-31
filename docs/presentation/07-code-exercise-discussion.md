@@ -1,13 +1,5 @@
 # 💬 Exercise: "Wannabe" Diagnosis - Discussion (2/2)
 
-Welcome back!
-
-**Let's Share Discoveries:**
-
-Now, let each representative from each group to briefly share **3 key problems** you identified
-
----
-
 ## 🧐 Synthesis - Major "Wannabe" Monolith Problems
 
 1.  🔗 **Synchronous Coupling:** Long chain of calls (`Webhook` -> `Submit` -> `Analyze` -> `Points` -> `Leaderboard`). *Problem: Performance, Resilience.*
