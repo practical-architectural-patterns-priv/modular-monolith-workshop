@@ -2,13 +2,13 @@
 
 <br/>
 
-<center>
-    <img src="philosoraptor.jpg" alt="Philosoraptor Logo" width="300"/>
-    <br/>
-    <h3>A hands-on workshop on modular monolith architecture, boundaries, and evolution</h3>
-    <br/>
-    <p>Presented by Marcin Rybak</p>
-</center>
+<p align="center">
+  <img src="philosoraptor.jpg" alt="Philosoraptor Logo" width="300"/>
+</p>
+
+<h3 align="center">A hands-on workshop on modular monolith architecture, boundaries, and evolution</h3>
+
+<p align="center">Presented by Marcin Rybak</p>
 
 ---
 

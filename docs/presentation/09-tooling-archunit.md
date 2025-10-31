@@ -12,9 +12,8 @@ Visualization (Spring Modulith) showed us the *problem*. How do we *enforce* the
 
 ## How It Works in Practice
 
-We define a rule that ArchUnit must guard.
-
-Then, ArchUnit runs as part of our pipeline.
+- We define a rule that ArchUnit must guard.
+- Then, ArchUnit runs as part of our pipeline.
 
 ```mermaid
 graph TD
