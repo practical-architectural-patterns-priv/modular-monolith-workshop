@@ -1,13 +1,5 @@
 # 💬 Exercise: "Wannabe" Diagnosis - Discussion (2/2)
 
-Welcome back!
-
-**Let's Share Discoveries (10 min):**
-
-Now, let each representative from each group to briefly share **3 key problems** you identified
-
----
-
 ## 🧐 Synthesis - Major "Wannabe" Monolith Problems
 
 1.  🔗 **Synchronous Coupling:** Long chain of calls (`Webhook` -> `Submit` -> `Analyze` -> `Points` -> `Leaderboard`). *Problem: Performance, Resilience.*
@@ -23,3 +15,11 @@ Now, let each representative from each group to briefly share **3 key problems**
 > **Package structure is NOT enough.** True modularity requires enforcing boundaries at the **API**, **DATA**, and **COMMUNICATION** levels.
 
 Now let's see tools that help achieve this...
+
+---
+
+<div align="center">
+    <a href="06-code-exercise-intro.md">◀️</a>
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="08-tooling-spring-modulith.md">▶️</a>
+</div>

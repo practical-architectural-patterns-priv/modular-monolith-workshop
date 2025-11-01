@@ -12,11 +12,17 @@ Visualization (Spring Modulith) showed us the *problem*. How do we *enforce* the
 
 ## How It Works in Practice
 
-We define a rule that ArchUnit must guard.
-
-Then, ArchUnit runs as part of our pipeline.
+- We define a rule that ArchUnit must guard.
+- Then, ArchUnit runs as part of our pipeline.
 
 ```mermaid
+%%{init: {"theme":"base","themeVariables":{
+  "primaryColor":"#FFFFFF",
+  "primaryTextColor":"#000000",
+  "primaryBorderColor":"#000000",
+  "lineColor":"#000000",
+  "textColor":"#000000"
+}}}%%
 graph TD
     A[Developer pushes 'bad' code] --> B{CI/CD Pipeline};
     B --> C[1. Compile: OK];
@@ -31,3 +37,11 @@ graph TD
     style E fill:#fef,stroke:#333,stroke-width:2px
     style F fill:#f99,stroke:#b00,stroke-width:3px
 ````
+
+---
+
+<div align="center">
+    <a href="08-tooling-spring-modulith.md">◀️</a>
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="10-redesign-principles.md">▶️</a>
+</div>

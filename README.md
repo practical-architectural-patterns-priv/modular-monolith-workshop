@@ -74,7 +74,7 @@ The system evaluates code quality, checks adherence to SOLID principles, awards 
 
 ```mermaid
 C4Context
-    UpdateLayoutConfig($c4ShapeInRow="2",$c4ContainerInRow="3")
+   UpdateLayoutConfig($c4ShapeInRow="2",$c4ContainerInRow="3")
 
    Person(dev, "Developer", "Writes and pushes code.")
    System_Ext(repo, "Git Host", "e.g. GitHub / GitLab.")
@@ -84,6 +84,13 @@ C4Context
    Rel(repo, platform, "Send Webhook Push Event")
    Rel(platform, repo, "Fetch code")
    Rel(dev, platform, "View leaderboard + points")
+
+   UpdateElementStyle(repo, $bgColor="#fff", $fontColor="#000", $borderColor="#888", $borderWidth="2")
+   UpdateElementStyle(dev, $bgColor="#fff", $fontColor="#000", $borderColor="#888", $borderWidth="2")
+   UpdateElementStyle(platform, $bgColor="#000", $fontColor="#fff", $borderColor="#888", $borderWidth="2")
+
+   UpdateRelStyle(dev, repo, $offsetY="-20",$offsetX="-20")
+   UpdateRelStyle(platform, repo, $offsetY="-20",$offsetX="-70")
 ```
 
 When a developer pushes code, the Git host sends a webhook to the platform.
@@ -115,6 +122,18 @@ C4Container
    Rel(repo, platform, "Webhook: code push")
    Rel(platform, store, "Persist/read user & metadata<br>Persist metrics & points<br>Persist/read leaderboard")
    Rel(platform, repo, "Fetch code")
+   UpdateElementStyle(repo, $bgColor="#fff", $fontColor="#000", $borderColor="#888", $borderWidth="2")
+   UpdateElementStyle(dev, $bgColor="#fff", $fontColor="#000", $borderColor="#888", $borderWidth="2")
+   UpdateElementStyle(store, $bgColor="#fff", $fontColor="#000", $borderColor="#888", $borderWidth="2")
+   UpdateElementStyle(ui, $bgColor="#fff", $fontColor="#000", $borderColor="#888", $borderWidth="2")
+
+   UpdateElementStyle(platform, $bgColor="#000", $fontColor="#fff", $borderColor="#888", $borderWidth="2")
+
+   UpdateRelStyle(dev, repo, $offsetY="-20",$offsetX="-20")
+   UpdateRelStyle(platform, repo, $offsetY="-20",$offsetX="30")
+   UpdateRelStyle(repo, platform, $offsetY="-20",$offsetX="-190")
+   UpdateRelStyle(dev, ui, $offsetY="-20",$offsetX="-10")
+   UpdateRelStyle(ui, platform, $offsetY="-20",$offsetX="-45")
 ```
 
 ---
@@ -122,6 +141,13 @@ C4Container
 ### <div id="sequence-diagram--submission-flow">Sequence Diagram - Submission Flow</div>
 
 ```mermaid
+%%{init: {"theme":"base","themeVariables":{
+  "primaryColor":"#FFFFFF",
+  "primaryTextColor":"#000000",
+  "primaryBorderColor":"#000000",
+  "lineColor":"#000000",
+  "textColor":"#000000"
+}}}%%
 sequenceDiagram
     participant Dev as Developer
     participant UI as Leaderboard UI
@@ -155,26 +181,56 @@ sequenceDiagram
 
 ```mermaid
 C4Component
-   UpdateLayoutConfig($c4ShapeInRow="3",$c4ComponentInRow="3")
+   UpdateLayoutConfig($c4ShapeInRow="3",$c4BoundaryInRow="1")
 
    System_Boundary(platform, "Platform Service"){
-      Component(submissions, "Submission Coordinator", "Module", "Webhook intake; validate & register submission")
+      Component(webhook, "Webhook", "Module", "Webhook intake")
+      Component(submissions, "Submission Coordinator", "Module", "Validate & register submission")
       Component(analysis, "Analysis Runner", "Module", "Fetch code; run analyzers; collect metrics")
-      Component(points, "Points Engine", "Module", "Derive points from metrics; append ledger")
       Component(leaderboard, "Leaderboard", "Module", "Maintain leaderboard view; expose leaderboard endpoint")
+      Component(points, "Points Engine", "Module", "Derive points from metrics; append ledger")
+
    }
 
    Container_Ext(repo, "Git Host", "VCS")
-   Container_Ext(db, "Data Store", "Database")
 
-   Rel(repo, submissions, "POST /webhook")
-   Rel(submissions, analysis, "Analyze submission")
+   Boundary(layout_helper6, "",""){
+      ContainerDb(db, "Data Store", "Database")
+   }
+
+   Rel(repo, webhook, "POST /webhook")
+   Rel(webhook, submissions, "Register <br> submission")
+
+   Rel(submissions, analysis, "Analyze <br> submission")
    Rel(analysis, repo, "Clone / fetch")
    Rel(analysis, points, "Provide metrics")
    Rel(points, db, "Store points")
-   Rel(points, leaderboard, "Notify points awarded")
-   Rel(leaderboard, db, "Update leaderboard")
+   Rel(points, leaderboard, "Update <br> leaderboard")
+   Rel(leaderboard, db, "Update & read leaderboard")
    Rel(submissions, db, "Store submissions")
+
+   UpdateElementStyle(repo, $bgColor="#fff", $fontColor="#000", $borderColor="#888", $borderWidth="2")
+   UpdateElementStyle(dev, $bgColor="#fff", $fontColor="#000", $borderColor="#888", $borderWidth="2")
+   UpdateElementStyle(db, $bgColor="#fff", $fontColor="#000", $borderColor="#888", $borderWidth="2")
+   UpdateElementStyle(ui, $bgColor="#fff", $fontColor="#000", $borderColor="#888", $borderWidth="2")
+
+   UpdateElementStyle(submissions, $bgColor="#000", $fontColor="#fff", $borderColor="#888", $borderWidth="2")
+   UpdateElementStyle(webhook, $bgColor="#000", $fontColor="#fff", $borderColor="#888", $borderWidth="2")
+   UpdateElementStyle(analysis, $bgColor="#000", $fontColor="#fff", $borderColor="#888", $borderWidth="2")
+   UpdateElementStyle(points, $bgColor="#000", $fontColor="#fff", $borderColor="#888", $borderWidth="2")
+   UpdateElementStyle(leaderboard, $bgColor="#000", $fontColor="#fff", $borderColor="#888", $borderWidth="2")
+
+   UpdateRelStyle(analysis, repo, $offsetY="-20",$offsetX="30")
+   UpdateRelStyle(repo, webhook, $offsetY="-50",$offsetX="0")
+   UpdateRelStyle(webhook, submissions, $offsetY="-20",$offsetX="-30")
+   UpdateRelStyle(submissions, analysis, $offsetY="-20",$offsetX="-30")
+   UpdateRelStyle(points, leaderboard, $offsetY="-20",$offsetX="-30")
+   UpdateRelStyle(submissions, db, $offsetY="-170",$offsetX="10")
+   UpdateRelStyle(leaderboard, db, $offsetY="-10",$offsetX="-100")
+
+
+
+
 ```
 
 ---

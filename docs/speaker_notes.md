@@ -1,3 +1,7 @@
+Here are the updated speaker notes based on the new slide deck structure you've provided.
+
+---
+
 # Speaker Notes for "Should Monoliths Die Out Like Dinosaurs?" Workshop
 
 ## Slide 01: Welcome
@@ -11,13 +15,12 @@
 * Launch the prepared Zoom poll.
 * Give 5 minutes
 * After collecting results, comment briefly. Note the distribution of experience.
-     * What's the dominant experience in the room?
-     * Do we have modular monolith experts already?
-
+  * What's the dominant experience in the room?
+  * Do we have modular monolith experts already?
 * Mention that regardless of your background, this workshop offers value:
-     * For monolith builders: How to regain control?
-     * For microservice builders: Are they always needed? What's the alternative?
-     * For everyone: How to design evolvable systems?
+  * For monolith builders: How to regain control?
+  * For microservice builders: Are they always needed? What's the alternative?
+  * For everyone: How to design evolvable systems?
 
 ## Slide 03: Spectrum
 
@@ -31,8 +34,7 @@
 * Explain the task clearly and concisely. Share the whiteboard link.
 * While participants add notes, start grouping them thematically "live." This shows their feedback is being processed.
 * After 7 minutes, stop the additions. Briefly discuss each problem cluster. Acknowledge these are real challenges.
-**Example Categories:**
-
+  **Example Categories:**
 * 🤯 **Cognitive Overload:**
   * "Hard to understand the whole thing"
   * "Onboarding new devs takes ages"
@@ -83,17 +85,15 @@
 ## Slide 09: Tooling - ArchUnit
 
 * Introduce ArchUnit as a tool for *active rule enforcement*. Stress that these are unit tests running in CI/CD.
-* Show the example test code. Explain its structure (layer definitions, `whereLayer...` rules).
-* **Key:** Explain *why* this test will fail on the "wannabe" code (point to the `mayOnlyAccessLayers` lines violated by repository injections and sync calls).
+* Show the example diagram. Explain its structure (Developer -> CI/CD -> ArchUnit Test).
+* **Key:** Explain *why* this test will fail on the "wannabe" code (point to the rule "Module A MUST NOT access internals of Module B").
 * If possible, show live (or screenshot) what a failing ArchUnit test looks like – its message is usually very clear, pinpointing the violating class.
-* Optional: Show how a simple code change (e.g., removing a bad dependency) makes the test pass.
 * End with a strong statement about ArchUnit as an automated guardian.
 
 ## Slide 10: Redesign Principles
 
-* Quickly reiterate the 4 main modularity principles as a reference point.
-* Go through the patterns again, this time relating them *directly* to the problems found in Con-SOLID-Ate. Show how a pattern solves a specific problem (e.g., Event-Driven breaks the sync chain).
-* Briefly mention Saga and Outbox patterns as solutions for data consistency in event-driven systems (no deep dive needed, but good awareness for seniors).
+* Quickly reiterate the 5 main modularity principles as a reference point.
+* These are the principles we will use for the next redesign exercise.
 * Prepare the ground for the design exercise.
 
 ## Slide 11: Redesign Exercise
@@ -110,26 +110,53 @@
 * Lead a summary discussion. Ask questions about how they applied patterns and principles.
 * **Important:** Connect the redesigned model back to the problems identified at the start (sticky notes). Show how modularity *specifically* solves those pains.
 * Draw the conclusion about intentional design and the modular monolith as a viable alternative.
-* Smoothly transition to the HEET case study.
+* Smoothly transition to the next slide.
 
-## Slide 13: Case Study HEET
+## Slide 13: But Why Not Microservices?
 
-* Introduce HEET as a real, internal HSBC example. Emphasize it was designed modularly from the start.
-* Describe the modules (if permissible).
-* **Focus on the `Workforce` extraction story.** This is the key proof point. Explain the *reason* for extraction (regulations).
-* Stress that the extraction was EASY and WHY it was easy (list the 3 points: data ownership, no joins, API).
-* Draw the strong conclusion: The Modular Monolith is an **evolutionary** architecture.
+* This is the question everyone is thinking. Let's address it directly.
+* **High Cost of Wrong Boundaries:** This is the most important point. It's easy to refactor a monolith; it's incredibly hard to refactor a distributed system.
+* This leads to the **"distributed monolith"** - the worst of both worlds.
+* Quote **Kelsey Hightower**: "Monolithic applications will be back in style after people discover the drawbacks of distributed monolithic applications."
+* The smart evolution is to start modular, refine boundaries, and *then* extract if needed.
+* **Modular Monolith as a Strategic Choice:** It's *deliberate*, not a compromise. It avoids operational complexity.
+* **Monoliths at Scale:**
+  * Mention the big examples: **Shopify** (Rails monolith), **GitHub** (scaled on a monolith), **Amazon Prime Video** (moved *back* to a monolith and saved 90%).
+  * Quote **Kelsey Hightower** on "Serverless monoliths" - you get the scaling benefits without the distributed complexity.
+* **When are Microservices Unavoidable?**
+  * Go through the list: Extreme scaling, independent deployment, different tech stacks, organizational boundaries, and **strict regulatory/data sovereignty rules**. These are the *exceptions*, not the default.
+* **Technical Realizations:** Briefly explain the three implementation options.
+* **Biggest Challenges of Extraction:** This is key. When you extract, you lose two things:
+  1.  **Atomic Transactions:** In the monolith, you can update orders and loyalty points in one transaction. In microservices, you can't. You need a **Saga** to manage this, which is complex (show diagram).
+  2.  **Atomic "Save and Publish":** In the monolith, you save to the DB and publish an in-memory event. If one fails, the whole transaction rolls back. In microservices, what if you save to the DB, but crash before sending the event to Kafka? The systems are inconsistent. You need the **Outbox Pattern** to fix this (show diagram).
+* *Transition:* "So we've seen it's a complex trade-off, but a modular monolith gives us an evolutionary path. Let's look at a real-world example of that exact evolution."
 
-## Slide 14: Evolution & Conway
+## Slide 14: Case Study HEET
 
-* Explain Conway's Law simply.
-* Show how it can be leveraged by aligning teams to modules (use the diagram). Emphasize benefits (autonomy, speed).
-* Discuss CI/CD. **Important:** State clearly it's still a single deployment unit. BUT, show how tests can be optimized in the pipeline for faster feedback despite single deployment.
+* Introduce HEET as a real, internal HSBC platform. Emphasize it was designed modularly from the start.
+* **"Before" Diagram:** Show the initial state. Point out the `Workforce Module` (in blue) and the `Other Modules` block. The key is that they are in *one* monolith but have *separate schemas* in the same DB instance. `Workforce` logic *only* touches the `Workforce` schema.
+* **The Challenge:** A new **regulatory/data residency requirement** emerged. The sensitive `Workforce` data had to be hosted in a different physical location.
+* **"After" Diagram:** Show the result. The `Workforce` module was "lifted and shifted" into its own microservice with its own database in a separate region.
+* **The Punchline:** This was **"smoothly and painlessly"** *because* it was designed as a modular monolith. The `Other Modules` were already communicating via an API, so the call was just changed from an in-process call to a network call. No other code had to change.
+* **Conclusion:** This proves the core thesis. The Modular Monolith **enables evolution**.
+* *Transition:* "This case study perfectly illustrates how architecture can mirror organizational needs, which brings us to..."
 
-## Slide 15: Wrap-up
+## Slide 15: Evolution, Organization & CI/CD
 
-* Quickly revisit the sticky notes problems. Show participants that the discussed techniques and tools directly address their pains.
-* Present the 4 key takeaways. Ensure they are concise and memorable.
+* Explain **Conway's Law** simply: "Architecture mirrors communication."
+* Use the diagram: "Instead of tangled teams on a tangled monolith, we align teams to modules." This gives **autonomy** and **clear ownership**.
+* Discuss CI/CD. **Important:** State clearly it's still a **single deployment unit**. BUT, show how tests can be optimized in the pipeline (run tests *only* for modules that changed) for faster feedback.
+* *Transition:* "Let's wrap up and review what we've learned."
+
+## Slide 16: Wrap-up
+
+* Quickly revisit the "Monolith Pains" from the sticky note exercise (Slide 04).
+* Show how the techniques we discussed directly address those pains.
+  * Modularity (Bounded Contexts) → Solves 🤯 Cognitive Load, 🤷 Better Ownership
+  * Explicit APIs / Events → Solves 🔗 Reduced Coupling
+  * Tooling (ArchUnit) → Solves 🔗 Enforced Boundaries
+  * Data Ownership → Solves 🔗 Reduced DB Coupling
+* Present the 4 **Key Takeaways** clearly.
 * Provide links to resources (code repository is most important).
 * Thank participants for their active involvement.
-* Open for Q&A (time permitting) or suggest follow-up discussion offline/chat.
+* Open for Q&A.

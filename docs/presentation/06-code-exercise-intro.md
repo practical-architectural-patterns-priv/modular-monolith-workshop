@@ -2,10 +2,9 @@
 
 ## Introducing: Con-SOLID-Ate Platform 🧪
 
-* A small but functional **Spring Boot** project (~16 classes).
+* A small but functional **Spring Boot** project (~16 classes), to which link was sent in invitation.
 * Purpose: Clean code gamification (analysis, points, leaderboard).
 * Package structure **looks** modular: `analysis`, `leaderboard`, `points`, `submission`, `shared`.
-
 
 
 **BUT... Is it *really* modular?** 🤔
@@ -14,13 +13,13 @@ This is an intentionally designed **"wannabe" monolith** – it looks good on th
 
 ---
 
-## 🕵️‍♀️ Your Mission (Breakout Rooms - 25 min)
+## 🕵️‍♀️ Your Mission 
 
 We'll split into groups. Your task is to diagnose this project and find where modularity **breaks down**.
 
 **Instructions:**
 
-1.  Review the code (link in chat soon).
+1.  Review the code.
 2.  Focus on **interactions BETWEEN packages** (modules).
 3.  **Pay close attention to the database!** (`schema.sql`, Repository queries).
 4.  Note down (e.g., on whiteboard) **at least 3 major problems/violations** of modular principles you find. Use the patterns we discussed.
@@ -34,3 +33,13 @@ We'll split into groups. Your task is to diagnose this project and find where mo
 * 📢 Are **events** used where decoupling would be beneficial?
 
 Be ready to share your findings when we return!
+
+**⌛ Let's spend up to 25 minutes on this task**
+
+---
+
+<div align="center">
+    <a href="05-fundamentals-patterns.md">◀️</a>
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="07-code-exercise-discussion.md">▶️</a>
+</div>
