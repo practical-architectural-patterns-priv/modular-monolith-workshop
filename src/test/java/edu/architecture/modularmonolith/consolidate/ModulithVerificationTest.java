@@ -16,7 +16,7 @@ class ModulithVerificationTest {
         ApplicationModules modules = ApplicationModules.of(ConSolidAte.class);
 
         LOGGER.debug("--- DETECTED MODULES ---");
-        modules.forEach(System.out::println);
+        modules.forEach(module -> LOGGER.debug(module.toString()));
 
         LOGGER.debug("Generating documentation...");
         new Documenter(modules)
