@@ -2,7 +2,7 @@
 
 **Today's Agenda (3h):**
 
-1.  **Context & Experience:** Where are we? What are our pains?
+1.  **Context & Experience:** What is our system architecture experience? And what are we struggling with?
 2.  **Diagnosis:** Analyzing a "wannabe" modular monolith (hands-on).
 3.  **Tooling:** Spring Modulith & ArchUnit in action.
 4.  **Design:** Better boundaries & patterns.
@@ -17,3 +17,8 @@
 * Learn tools for boundary visualization & enforcement (Spring Modulith, ArchUnit).
 * See a production example (HEET) and its evolution.
 * Connect architecture to organizational structure.
+
+---
+<div align="right">
+    <a href="02-poll.md">▶️</a>
+</div>

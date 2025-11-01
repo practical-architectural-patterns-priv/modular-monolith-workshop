@@ -2,7 +2,7 @@
 
 Time to apply the theory!
 
-**Task (Breakout Rooms - Whiteboard - 15 min):**
+**Task:**
 
 In groups, propose an **improved modular structure** for Con-SOLID-Ate, addressing the problems found.
 
@@ -21,3 +21,13 @@ In groups, propose an **improved modular structure** for Con-SOLID-Ate, addressi
 
 * What belongs in the `Shared Kernel`?
 * What are the trade-offs between sync vs. async communication here?
+
+**⌛ Let's spend up to 15 minutes on this task**
+
+---
+
+<div align="center">
+    <a href="10-redesign-principles.md">◀️</a>
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="12-redesign-lessons.md">▶️</a>
+</div>
