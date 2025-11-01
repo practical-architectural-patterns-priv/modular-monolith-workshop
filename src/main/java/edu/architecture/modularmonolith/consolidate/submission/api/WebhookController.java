@@ -1,6 +1,6 @@
-package edu.architecture.modularmonolith.consolidate.webhook;
+package edu.architecture.modularmonolith.consolidate.submission.api;
 
-import edu.architecture.modularmonolith.consolidate.submission.SubmissionService;
+import edu.architecture.modularmonolith.consolidate.submission.internal.SubmissionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,7 +19,7 @@ class WebhookController {
 
     @PostMapping("/github")
     public ResponseEntity<String> handlePush(@RequestBody GithubWebhookPayload payload) {
-        submissionService.create(payload.userId(), payload.pullRequestUrl());
+        String submissionKey = submissionService.create(payload.userId(), payload.pullRequestUrl());
         return ResponseEntity.accepted().build();
     }
 }

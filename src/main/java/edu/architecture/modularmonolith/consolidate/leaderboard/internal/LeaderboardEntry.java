@@ -1,4 +1,4 @@
-package edu.architecture.modularmonolith.consolidate.leaderboard;
+package edu.architecture.modularmonolith.consolidate.leaderboard.internal;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

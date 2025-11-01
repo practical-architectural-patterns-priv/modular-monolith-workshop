@@ -74,7 +74,7 @@ The system evaluates code quality, checks adherence to SOLID principles, awards 
 
 ```mermaid
 C4Context
-   UpdateLayoutConfig($c4ShapeInRow="2",$c4ContainerInRow="3")
+    UpdateLayoutConfig($c4ShapeInRow="2",$c4ContainerInRow="3")
 
    Person(dev, "Developer", "Writes and pushes code.")
    System_Ext(repo, "Git Host", "e.g. GitHub / GitLab.")
@@ -184,53 +184,63 @@ C4Component
    UpdateLayoutConfig($c4ShapeInRow="3",$c4BoundaryInRow="1")
 
    System_Boundary(platform, "Platform Service"){
-      Component(webhook, "Webhook", "Module", "Webhook intake")
-      Component(submissions, "Submission Coordinator", "Module", "Validate & register submission")
+      Component(submissions, "Submission Coordinator", "Module", "Webhook intake; validate & register submission")
       Component(analysis, "Analysis Runner", "Module", "Fetch code; run analyzers; collect metrics")
-      Component(leaderboard, "Leaderboard", "Module", "Maintain leaderboard view; expose leaderboard endpoint")
+      ComponentQueue(bus, "Internal Message Bus", "Queue", "Delivers domain events between components (in-process pub/sub)")
       Component(points, "Points Engine", "Module", "Derive points from metrics; append ledger")
-
+      Component(leaderboard, "Leaderboard", "Module", "Maintain leaderboard view; expose leaderboard endpoint")
    }
 
    Container_Ext(repo, "Git Host", "VCS")
-
-   Boundary(layout_helper6, "",""){
+   Boundary(layout_helper, "",""){
       ContainerDb(db, "Data Store", "Database")
    }
 
-   Rel(repo, webhook, "POST /webhook")
-   Rel(webhook, submissions, "Register <br> submission")
+   Rel(submissions, bus, "Publish SubmissionRegistered")
+   Rel(bus, analysis, "Dispatch SubmissionRegistered")
 
-   Rel(submissions, analysis, "Analyze <br> submission")
-   Rel(analysis, repo, "Clone / fetch")
-   Rel(analysis, points, "Provide metrics")
+   Rel(analysis, bus, "Publish AnalysisCompleted")
+   Rel(bus, points, "Dispatch <br> AnalysisCompleted")
+
+   Rel(points, bus, "Publish <br> PointsAwarded")
+   Rel(bus, leaderboard, "Dispatch PointsAwarded")
+
+   Rel(analysis, repo, "Clone / fetch source")
+   Rel(analysis, db, "Persist metrics")
+
+   Rel(points, db, "Persist points ledger")
+
+   Rel(repo, submissions, "POST /webhook")
    Rel(points, db, "Store points")
-   Rel(points, leaderboard, "Update <br> leaderboard")
-   Rel(leaderboard, db, "Update & read leaderboard")
+   Rel(leaderboard, db, "Update leaderboard")
    Rel(submissions, db, "Store submissions")
 
    UpdateElementStyle(repo, $bgColor="#fff", $fontColor="#000", $borderColor="#888", $borderWidth="2")
    UpdateElementStyle(dev, $bgColor="#fff", $fontColor="#000", $borderColor="#888", $borderWidth="2")
    UpdateElementStyle(db, $bgColor="#fff", $fontColor="#000", $borderColor="#888", $borderWidth="2")
    UpdateElementStyle(ui, $bgColor="#fff", $fontColor="#000", $borderColor="#888", $borderWidth="2")
-
+   UpdateElementStyle(bus, $bgColor="#fff", $fontColor="#000", $borderColor="#888", $borderWidth="2")
    UpdateElementStyle(submissions, $bgColor="#000", $fontColor="#fff", $borderColor="#888", $borderWidth="2")
-   UpdateElementStyle(webhook, $bgColor="#000", $fontColor="#fff", $borderColor="#888", $borderWidth="2")
    UpdateElementStyle(analysis, $bgColor="#000", $fontColor="#fff", $borderColor="#888", $borderWidth="2")
    UpdateElementStyle(points, $bgColor="#000", $fontColor="#fff", $borderColor="#888", $borderWidth="2")
    UpdateElementStyle(leaderboard, $bgColor="#000", $fontColor="#fff", $borderColor="#888", $borderWidth="2")
 
    UpdateRelStyle(analysis, repo, $offsetY="-20",$offsetX="30")
-   UpdateRelStyle(repo, webhook, $offsetY="-50",$offsetX="0")
-   UpdateRelStyle(webhook, submissions, $offsetY="-20",$offsetX="-30")
-   UpdateRelStyle(submissions, analysis, $offsetY="-20",$offsetX="-30")
-   UpdateRelStyle(points, leaderboard, $offsetY="-20",$offsetX="-30")
-   UpdateRelStyle(submissions, db, $offsetY="-170",$offsetX="10")
+
+   UpdateRelStyle(submissions, db, $offsetY="-300",$offsetX="-80")
    UpdateRelStyle(leaderboard, db, $offsetY="-10",$offsetX="-100")
+   UpdateRelStyle(analysis, db, $offsetY="-300", $offsetX="200")
 
+   UpdateRelStyle(bus, analysis, $offsetY="30", $offsetX="-180")
+   UpdateRelStyle(analysis, bus, $offsetY="-40", $offsetX="-100")
 
+   UpdateRelStyle(points, bus, $offsetY="-30", $offsetX="-30")
+   UpdateRelStyle(bus, points, $offsetY="30", $offsetX="-40")
 
+   UpdateRelStyle(leaderboard, db, $offsetY="-100", $offsetX="0")
+   UpdateRelStyle(points, db, $offsetY="-200", $offsetX="250")
 
+   UpdateElementStyle(layout_helper, $borderColor="#fff")
 ```
 
 ---
@@ -244,7 +254,6 @@ This section provides an overview of the source code layout and explains the pur
 src/
 ├── main/
 │   ├── java/edu/architecture/modularmonolith/consolidate/
-│   │   ├── webhook/                # Handles Git webhook intake (entry point)
 │   │   ├── submission/             # Manages submission lifecycle and metadata
 │   │   ├── analysis/               # Executes static analysis jobs and collects metrics
 │   │   ├── points/                 # Calculates points and maintains points ledger
@@ -257,6 +266,10 @@ src/
 └── test/
     └──groovy/                      # End-to-end Spock BDD tests
 ````
+Each module package contains two sub-packages:
+- **api** - represents module public interface that can be levaraged by other modules
+- **internal** - represents module
+
 ---
 
 ## <div id="deployment">🚀 Deployment</div>

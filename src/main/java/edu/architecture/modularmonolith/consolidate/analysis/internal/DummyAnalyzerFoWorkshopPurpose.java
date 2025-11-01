@@ -1,5 +1,6 @@
-package edu.architecture.modularmonolith.consolidate.analysis;
+package edu.architecture.modularmonolith.consolidate.analysis.internal;
 
+import edu.architecture.modularmonolith.consolidate.analysis.api.AnalysisMetrics;
 import org.springframework.stereotype.Service;
 import java.util.Random;
 

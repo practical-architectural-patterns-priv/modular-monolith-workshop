@@ -1,6 +1,6 @@
 package edu.architecture.modularmonolith.consolidate
 
-import edu.architecture.modularmonolith.consolidate.analysis.DeterministicAnalyzerConfig
+import edu.architecture.modularmonolith.consolidate.analysis.internal.DeterministicAnalyzerConfig
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate

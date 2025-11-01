@@ -1,20 +1,24 @@
-package edu.architecture.modularmonolith.consolidate.submission;
+package edu.architecture.modularmonolith.consolidate.submission.internal;
 
 import jakarta.persistence.*;
 import java.time.Instant;
 
 @Entity
 @Table(name="submissions")
-public
 class Submission {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "business_key", unique = true, nullable = false, updatable = false)
+    private String businessKey;
+
     private String userId;
     private String url;
     private Instant createdAt = Instant.now();
 
-    public Submission(String userId, String url){
+    public Submission(String businessKey, String userId, String url){
+        this.businessKey = businessKey;
         this.userId=userId;
         this.url=url;
     }
@@ -38,4 +42,7 @@ class Submission {
         return createdAt;
     }
 
+    public String getBusinessKey(){
+        return businessKey;
+    }
 }

@@ -1,15 +1,25 @@
 package edu.architecture.modularmonolith.consolidate.analysis
 
-import edu.architecture.modularmonolith.consolidate.points.PointsService
+import edu.architecture.modularmonolith.consolidate.analysis.api.AnalysisCompleted
+import edu.architecture.modularmonolith.consolidate.analysis.internal.AnalyzerService
+import edu.architecture.modularmonolith.consolidate.analysis.internal.DeterministicAnalyzerConfig
+import edu.architecture.modularmonolith.consolidate.shared.events.EventBus
+import edu.architecture.modularmonolith.consolidate.submission.api.SubmissionRegistered
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean
+import org.springframework.transaction.support.TransactionTemplate
 import spock.lang.Specification
+import spock.util.concurrent.PollingConditions
 
-import static org.mockito.Mockito.*
+import java.time.Instant
+
+import static org.mockito.ArgumentMatchers.isA
+import static org.mockito.Mockito.times
+import static org.mockito.Mockito.verify
 
 @SpringBootTest(properties = ["spring.main.allow-bean-definition-overriding=true"],
         classes = [DeterministicAnalyzerConfig])
@@ -23,32 +33,35 @@ class AnalysisModuleTest extends Specification {
     @Autowired
     JdbcTemplate jdbcTemplate
 
+    @Autowired
+    TransactionTemplate transactionTemplate
+
     @MockitoSpyBean
-    PointsService pointsService
+    EventBus eventBus
 
     def "test analysis"() {
-        given: "submission with id and pull request url exists"
-        def submissionId = 101L
-        def url = "https://github.com/repos/con-solid-ate/pull/1"
-        jdbcTemplate.execute("INSERT INTO submissions(id, url, user_id) VALUES (${submissionId},'${url}', 'ghost.pirate.lechuck@monkeyisland.com')")
+        when: "submission is registered"
+        def submissionKey = "977213cd-4f2d-4373-98d3-d47be2b030f1"
+        transactionTemplate.execute { status ->
+            eventBus.publish(new SubmissionRegistered(
+                    submissionKey, "ghost.pirate.lechuck@monkeyisland.com", "https://github.com/repos/con-solid-ate/pull/1", Instant.now()))
+        }
 
-        when: "analysis is executed"
-        analyzerService.analyzeSubmission(submissionId, url)
+        then: "metrics corresponding to analyzer output are eventually persisted"
+        new PollingConditions(timeout: 5).eventually {
+            def persistedAnalyses = jdbcTemplate.queryForList("SELECT * FROM analysis_results")
+            persistedAnalyses.size() == 1
 
-        then: "metrics are persisted"
-        def persistedAnalyses = jdbcTemplate.queryForList("SELECT * FROM analysis_results")
-        persistedAnalyses.size() == 1
+            def saved = persistedAnalyses.first()
+            saved.submission_key == submissionKey
+            saved.maintainability_score == 8
+            saved.complexity_score == 3
+            saved.duplication_score == 2
+            saved.solid_violations == 1
+        }
 
-        and: "stored metrics correspond to analyzer output"
-        def saved = persistedAnalyses.first()
-        saved.submission_id == submissionId
-        saved.maintainability_score == 8
-        saved.complexity_score == 3
-        saved.duplication_score == 2
-        saved.solid_violations == 1
-
-        and: "points awarding is triggered"
-        verify(pointsService, times(1)).awardPointsForSubmission(submissionId)
+        and: "event is published"
+        verify(eventBus, times(1)).publish(isA(AnalysisCompleted.class))
     }
 }
 
