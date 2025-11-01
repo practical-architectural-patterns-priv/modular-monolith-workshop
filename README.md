@@ -84,6 +84,13 @@ C4Context
    Rel(repo, platform, "Send Webhook Push Event")
    Rel(platform, repo, "Fetch code")
    Rel(dev, platform, "View leaderboard + points")
+
+   UpdateElementStyle(repo, $bgColor="#fff", $fontColor="#000", $borderColor="#888", $borderWidth="2")
+   UpdateElementStyle(dev, $bgColor="#fff", $fontColor="#000", $borderColor="#888", $borderWidth="2")
+   UpdateElementStyle(platform, $bgColor="#000", $fontColor="#fff", $borderColor="#888", $borderWidth="2")
+
+   UpdateRelStyle(dev, repo, $offsetY="-20",$offsetX="-20")
+   UpdateRelStyle(platform, repo, $offsetY="-20",$offsetX="-70")
 ```
 
 When a developer pushes code, the Git host sends a webhook to the platform.
@@ -115,6 +122,18 @@ C4Container
    Rel(repo, platform, "Webhook: code push")
    Rel(platform, store, "Persist/read user & metadata<br>Persist metrics & points<br>Persist/read leaderboard")
    Rel(platform, repo, "Fetch code")
+   UpdateElementStyle(repo, $bgColor="#fff", $fontColor="#000", $borderColor="#888", $borderWidth="2")
+   UpdateElementStyle(dev, $bgColor="#fff", $fontColor="#000", $borderColor="#888", $borderWidth="2")
+   UpdateElementStyle(store, $bgColor="#fff", $fontColor="#000", $borderColor="#888", $borderWidth="2")
+   UpdateElementStyle(ui, $bgColor="#fff", $fontColor="#000", $borderColor="#888", $borderWidth="2")
+
+   UpdateElementStyle(platform, $bgColor="#000", $fontColor="#fff", $borderColor="#888", $borderWidth="2")
+
+   UpdateRelStyle(dev, repo, $offsetY="-20",$offsetX="-20")
+   UpdateRelStyle(platform, repo, $offsetY="-20",$offsetX="30")
+   UpdateRelStyle(repo, platform, $offsetY="-20",$offsetX="-190")
+   UpdateRelStyle(dev, ui, $offsetY="-20",$offsetX="-10")
+   UpdateRelStyle(ui, platform, $offsetY="-20",$offsetX="-45")
 ```
 
 ---
@@ -122,6 +141,13 @@ C4Container
 ### <div id="sequence-diagram--submission-flow">Sequence Diagram - Submission Flow</div>
 
 ```mermaid
+%%{init: {"theme":"base","themeVariables":{
+  "primaryColor":"#FFFFFF",
+  "primaryTextColor":"#000000",
+  "primaryBorderColor":"#000000",
+  "lineColor":"#000000",
+  "textColor":"#000000"
+}}}%%
 sequenceDiagram
     participant Dev as Developer
     participant UI as Leaderboard UI
@@ -170,7 +196,10 @@ C4Component
    }
 
    Container_Ext(repo, "Git Host", "VCS")
-   Container_Ext(db, "Data Store", "Database")
+
+   Boundary(layout_helper6, "",""){
+      ContainerDb(db, "Data Store", "Database")
+   }
 
    Rel(submissions, bus, "Publish SubmissionRegistered")
    Rel(bus, analysis, "Dispatch SubmissionRegistered")
@@ -190,6 +219,26 @@ C4Component
    Rel(points, db, "Store points")
    Rel(leaderboard, db, "Update leaderboard")
    Rel(submissions, db, "Store submissions")
+
+   UpdateElementStyle(repo, $bgColor="#fff", $fontColor="#000", $borderColor="#888", $borderWidth="2")
+   UpdateElementStyle(dev, $bgColor="#fff", $fontColor="#000", $borderColor="#888", $borderWidth="2")
+   UpdateElementStyle(db, $bgColor="#fff", $fontColor="#000", $borderColor="#888", $borderWidth="2")
+   UpdateElementStyle(ui, $bgColor="#fff", $fontColor="#000", $borderColor="#888", $borderWidth="2")
+
+   UpdateElementStyle(submissions, $bgColor="#000", $fontColor="#fff", $borderColor="#888", $borderWidth="2")
+   UpdateElementStyle(analysis, $bgColor="#000", $fontColor="#fff", $borderColor="#888", $borderWidth="2")
+   UpdateElementStyle(points, $bgColor="#000", $fontColor="#fff", $borderColor="#888", $borderWidth="2")
+   UpdateElementStyle(leaderboard, $bgColor="#000", $fontColor="#fff", $borderColor="#888", $borderWidth="2")
+
+   UpdateRelStyle(analysis, repo, $offsetY="-20",$offsetX="30")
+   UpdateRelStyle(submissions, analysis, $offsetY="-20",$offsetX="-30")
+   UpdateRelStyle(points, leaderboard, $offsetY="-20",$offsetX="-30")
+   UpdateRelStyle(submissions, db, $offsetY="-170",$offsetX="10")
+   UpdateRelStyle(leaderboard, db, $offsetY="-10",$offsetX="-100")
+
+
+
+
 
    UpdateRelStyle(bus, analysis, $offsetY="30", $offsetX="-100")
    UpdateRelStyle(analysis, bus, $offsetY="-10", $offsetX="10")
@@ -227,10 +276,9 @@ src/
 └── test/
     └──groovy/                      # End-to-end Spock BDD tests
 ````
-
 Each module package contains two sub-packages:
 - **api** - represents module public interface that can be levaraged by other modules
-- **internal** - represents module internals that cannot be used outside it
+- **internal** - represents module
 
 ---
 
