@@ -219,3 +219,11 @@ Before looking at code, let's learn the thinking tools:
     * **When:** When immediate consistency isn't required or to decouple a long process.
 
 We'll use these patterns to evaluate the code in the next exercise
+
+---
+
+<div align="center">
+    <a href="04-monolith-problems.md">◀️</a>
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="06-code-exercise-intro.md">▶️</a>
+</div>

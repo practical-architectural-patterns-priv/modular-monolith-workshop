@@ -36,3 +36,10 @@ Be ready to share your findings when we return!
 
 **⌛ Let's spend up to 25 minutes on this task**
 
+---
+
+<div align="center">
+    <a href="05-fundamentals-patterns.md">◀️</a>
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="07-code-exercise-discussion.md">▶️</a>
+</div>

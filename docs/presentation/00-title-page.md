@@ -18,7 +18,7 @@
 2.  [**Poll: Experience Spectrum**](02-poll.md)
 3.  [**Architecture Spectrum: System Evolution**](03-spectrum.md)
 4.  [**Exercise: Our Monolith Pains**](04-monolith-problems.md)
-5.  [**Module Fundamentals & Key Patterns**](05-fundamentals-patterns.md)
+5.  [**Modular Monolith Fundamentals & Key Patterns**](05-fundamentals-patterns.md)
 6.  [**Exercise: Diagnosing a "Wannabe" Modular Monolith (1/2)**](06-code-exercise-intro.md)
 7.  [**Exercise: "Wannabe" Diagnosis - Discussion (2/2)**](07-code-exercise-discussion.md)
 8.  [**Tooling: Visualizing Boundaries - Spring Modulith (1/2)**](08-tooling-spring-modulith.md)

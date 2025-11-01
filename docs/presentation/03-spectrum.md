@@ -223,3 +223,10 @@ C4Component
 -----
 
 🤔 Where do your current systems sit on this spectrum?
+
+---
+<div align="center">
+    <a href="02-poll.md">◀️</a>
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="04-monolith-problems.md">▶️</a>
+</div>

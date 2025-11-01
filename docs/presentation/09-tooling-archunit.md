@@ -30,3 +30,11 @@ graph TD
     style E fill:#fef,stroke:#333,stroke-width:2px
     style F fill:#f99,stroke:#b00,stroke-width:3px
 ````
+
+---
+
+<div align="center">
+    <a href="08-tooling-spring-modulith.md">◀️</a>
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="10-redesign-principles.md">▶️</a>
+</div>

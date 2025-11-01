@@ -10,3 +10,9 @@ We've seen the problems and the tools. How do we design it **better**?
 4.  **Low Coupling, High Cohesion:** Modules are independent, internally focused.
 5.  **Event-Driven Integration:** Key to breaking the chain of calls
 ---
+
+<div align="center">
+    <a href="09-tooling-archunit.md">◀️</a>
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="11-redesign-exercise.md">▶️</a>
+</div>

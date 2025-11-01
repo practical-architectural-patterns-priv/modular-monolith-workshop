@@ -42,3 +42,11 @@ graph TD
 * It exposes **hidden coupling** we might miss manually.
 
 Visualization is powerful for understanding and communicating architecture!
+
+---
+
+<div align="center">
+    <a href="07-code-exercise-discussion.md">◀️</a>
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="09-tooling-archunit.md">▶️</a>
+</div>

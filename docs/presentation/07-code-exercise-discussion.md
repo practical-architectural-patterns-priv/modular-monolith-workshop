@@ -15,3 +15,11 @@
 > **Package structure is NOT enough.** True modularity requires enforcing boundaries at the **API**, **DATA**, and **COMMUNICATION** levels.
 
 Now let's see tools that help achieve this...
+
+---
+
+<div align="center">
+    <a href="06-code-exercise-intro.md">◀️</a>
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="08-tooling-spring-modulith.md">▶️</a>
+</div>
