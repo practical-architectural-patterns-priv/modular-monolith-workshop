@@ -15,6 +15,13 @@ How can we *see* what's really happening between modules?
 Let's run Spring Modulith on our "wannabe" monolith...
 
 ```mermaid
+%%{init: {"theme":"base","themeVariables":{
+  "primaryColor":"#FFFFFF",
+  "primaryTextColor":"#000000",
+  "primaryBorderColor":"#000000",
+  "lineColor":"#000000",
+  "textColor":"#000000"
+}}}%%
 graph TD
     subgraph Con-SOLID-Ate
         webhook --> submission;

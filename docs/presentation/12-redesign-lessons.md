@@ -22,4 +22,10 @@ Welcome back!
 
 > **Intentional boundary design** and choosing the **right communication patterns** are key to a maintainable, evolvable monolith. You don't always need to jump to microservices!
 
-Now let's see how this looks in a real production system...
+---
+
+<div align="center">
+    <a href="11-redesign-exercise.md">◀️</a>
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="13-why-not-microservices.md">▶️</a>
+</div>

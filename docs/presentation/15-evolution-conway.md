@@ -10,6 +10,13 @@
 * **Strategy:** Align team structure with module boundaries! 🧩
 
 ```mermaid
+%%{init: {"theme":"base","themeVariables":{
+  "primaryColor":"#FFFFFF",
+  "primaryTextColor":"#000000",
+  "primaryBorderColor":"#000000",
+  "lineColor":"#000000",
+  "textColor":"#000000"
+}}}%%
 graph TD
     subgraph System Architecture
         direction LR
@@ -42,3 +49,11 @@ graph TD
 * **BUT... The pipeline can be smarter!**
     * We can optimize the testing phase – run tests only for modules that **actually changed** (and their direct dependents).
     * Faster feedback for developers! ⚡
+
+---
+
+<div align="center">
+    <a href="14-case-study-heet.md">◀️</a>
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="16-wrap-up.md">▶️</a>
+</div>

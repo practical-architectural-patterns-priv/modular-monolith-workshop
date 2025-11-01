@@ -26,8 +26,9 @@
 10. [**Designing Better Boundaries (1/3)**](10-redesign-principles.md)
 11. [**Exercise: Collaborative Redesign of Con-SOLID-Ate (2/3)**](11-redesign-exercise.md)
 12. [**Exercise: Redesign Lessons Learned (3/3)**](12-redesign-lessons.md)
-13. [**Case Study: HEET – A Modular Monolith in Production (HSBC)**](13-case-study-heet.md)
-14. [**Evolution, Organization & CI/CD**](14-evolution-conway.md)
-15. [**Wrap-Up & Conclusion**](15-wrap-up.md)
+13. [**But Why Not Microservices?**](13-why-not-microservices.md)
+14. [**Case Study: HEET – A Modular Monolith in Production (HSBC)**](14-case-study-heet.md)
+15. [**Evolution, Organization & CI/CD**](15-evolution-conway.md)
+16. [**Wrap-Up & Conclusion**](16-wrap-up.md)
 
 ---

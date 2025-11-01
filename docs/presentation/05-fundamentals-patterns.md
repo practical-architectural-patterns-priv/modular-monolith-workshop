@@ -21,8 +21,6 @@ The pain points we listed before can be solved in different ways, such as applyi
   "lineColor":"#000000",
   "textColor":"#000000"
 }}}%%
-
-
 graph TD
     subgraph "❌ Bad: Tangled 'God Entity'"
         GodCustomer["Customer<br>ContractID<br>PaymentStatus<br>UserID<br>Email<br>IsVerified<br>TicketID<br>SupportHistory"]
